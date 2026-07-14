@@ -658,7 +658,7 @@ function renderTreatmentsUI() {
     if (pkg.discount > 0) {
       const discountedPrice = pkg.price * (1 - pkg.discount / 100);
       const formattedPrice = discountedPrice.toFixed(2).replace(/\.00$/, '');
-      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.5rem; font-weight: normal;">$${pkg.price}</span><strong>$${formattedPrice}</strong>`;
+      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.4rem; font-weight: normal;">$${pkg.price}</span><strong>$${formattedPrice}</strong><span class="discount-percent-badge" style="background: rgba(212, 165, 116, 0.12); color: var(--gold-dark); font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 0.5rem; text-transform: uppercase; letter-spacing: 0.3px; border: 1px solid rgba(212, 165, 116, 0.25); display: inline-block; vertical-align: middle;">${pkg.discount}% OFF</span>`;
     }
     return `<strong>$${pkg.price}</strong>`;
   };
@@ -845,6 +845,7 @@ function renderBookingFormDropdowns() {
             <span class="option-price">
               ${pkg.discount > 0 ? `<span style="text-decoration: line-through; opacity: 0.55; margin-right: 4px;">$${pkg.price}</span>` : ''}
               $${formattedPrice}
+              ${pkg.discount > 0 ? `<span style="font-size: 0.75rem; color: var(--gold-dark); margin-left: 4px; font-weight: bold;">(${pkg.discount}% OFF)</span>` : ''}
             </span>
           </span>
         </label>
