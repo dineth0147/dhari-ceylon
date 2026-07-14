@@ -658,7 +658,7 @@ function renderTreatmentsUI() {
     if (pkg.discount > 0) {
       const discountedPrice = pkg.price * (1 - pkg.discount / 100);
       const formattedPrice = discountedPrice.toFixed(2).replace(/\.00$/, '');
-      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.4rem; font-weight: normal;">$${pkg.price}</span><strong>$${formattedPrice}</strong><span class="discount-percent-badge" style="background: rgba(212, 165, 116, 0.12); color: var(--gold-dark); font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 0.5rem; text-transform: uppercase; letter-spacing: 0.3px; border: 1px solid rgba(212, 165, 116, 0.25); display: inline-block; vertical-align: middle;">${pkg.discount}% OFF</span>`;
+      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.4rem; font-weight: normal;">$${pkg.price}</span><strong>$${formattedPrice}</strong>`;
     }
     return `<strong>$${pkg.price}</strong>`;
   };
@@ -679,6 +679,7 @@ function renderTreatmentsUI() {
 
         card.innerHTML = `
           ${isFeatured ? `<div class="journey-premium-badge">${pkg.tag || 'Most Popular'}</div>` : ''}
+          ${pkg.discount > 0 ? `<div class="discount-percent-badge">${pkg.discount}% OFF</div>` : ''}
           <div class="treatment-card-image" style="background-image: url('${pkg.image}')"></div>
           <div class="treatment-card-content">
             ${(!isFeatured && pkg.tag) ? `<div class="treatment-card-tag">${pkg.tag}</div>` : ''}
@@ -713,6 +714,7 @@ function renderTreatmentsUI() {
 
         card.innerHTML = `
           ${isFeatured ? `<div class="journey-premium-badge">${pkg.tag || 'Featured'}</div>` : ''}
+          ${pkg.discount > 0 ? `<div class="discount-percent-badge">${pkg.discount}% OFF</div>` : ''}
           <div class="treatment-card-content" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; min-height: 200px;">
             <div>
               ${(!isFeatured && pkg.tag) ? `<div class="treatment-card-tag">${pkg.tag}</div>` : ''}
@@ -751,6 +753,7 @@ function renderTreatmentsUI() {
 
         card.innerHTML = `
           ${pkg.tag ? `<div class="journey-premium-badge">${pkg.tag}</div>` : ''}
+          ${pkg.discount > 0 ? `<div class="discount-percent-badge" style="top: 1.5rem; right: 2rem;">${pkg.discount}% OFF</div>` : ''}
           ${pkg.image ? `<div class="journey-card-image" style="background-image: url('${pkg.image}'); height: 220px; background-size: cover; background-position: center; border-radius: var(--radius-md); margin-bottom: 1.5rem;"></div>` : ''}
           <div class="journey-duration">${pkg.duration || 'Retreat'}</div>
           <h3 class="journey-title">${pkg.name}</h3>
@@ -788,6 +791,7 @@ function renderTreatmentsUI() {
 
         card.innerHTML = `
           ${pkg.tag ? `<div class="journey-premium-badge">${pkg.tag}</div>` : ''}
+          ${pkg.discount > 0 ? `<div class="discount-percent-badge" style="top: 1.5rem; right: 2rem;">${pkg.discount}% OFF</div>` : ''}
           <div class="journey-duration">${pkg.duration || 'Retreat'}</div>
           <h3 class="journey-title">${pkg.name}</h3>
           <p class="journey-desc">${pkg.description}</p>
