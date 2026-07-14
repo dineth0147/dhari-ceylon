@@ -21,11 +21,11 @@ const auth = firebase.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 // ---- WhatsApp Config ----
-const WHATSAPP_NUMBER = '94787327103';
+const WHATSAPP_NUMBER = '94776271721';
 
 // ---- Admin Config ----
 const ADMIN_EMAILS = [
-  'dinethsachinthagama@gmail.com', // Replace with your actual email
+  'dinethsachinthagama@gmail.com', // 
   'dinet.t23@gmail.com', // Pre-added for convenience
   'supunepa4@gmail.com',
   'dhariceylon111@gmail.com',
@@ -630,7 +630,7 @@ async function seedDefaultPackages() {
     const docRef = db.collection('packages').doc();
     batch.set(docRef, pkg);
   });
-  
+
   // Set seeding metadata doc to prevent auto-reseeding when database is cleared
   const metaRef = db.collection('packages').doc('_seeding_metadata');
   batch.set(metaRef, { seeded: true, seededAt: firebase.firestore.FieldValue.serverTimestamp() });
@@ -675,7 +675,7 @@ function renderTreatmentsUI() {
         const card = document.createElement('div');
         const isFeatured = !!pkg.isFeatured;
         card.className = `treatment-card ${isFeatured ? 'treatment-card-premium' : ''} animate-on-scroll visible`;
-        
+
         const isInCart = cart.some(item => item.id === pkg.id);
 
         card.innerHTML = `
@@ -710,7 +710,7 @@ function renderTreatmentsUI() {
         const card = document.createElement('div');
         const isFeatured = !!pkg.isFeatured;
         card.className = `treatment-card ${isFeatured ? 'treatment-card-premium' : ''} animate-on-scroll visible`;
-        
+
         const isInCart = cart.some(item => item.id === pkg.id);
 
         card.innerHTML = `
@@ -1003,9 +1003,9 @@ function renderAdminDashboard() {
   loadedPackages.forEach(pkg => {
     const tr = document.createElement('tr');
     const typeLabel = pkg.type || (["Targeted Pain Relief", "Surfer & Local Recovery", "Weight Reduction & Toning"].includes(pkg.category) ? "Medical Care" : "Wellness Care");
-    
-    const priceDisplay = pkg.discount > 0 
-      ? `<strong>$${(pkg.price * (1 - pkg.discount / 100)).toFixed(2).replace(/\.00$/, '')}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">$${pkg.price}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>` 
+
+    const priceDisplay = pkg.discount > 0
+      ? `<strong>$${(pkg.price * (1 - pkg.discount / 100)).toFixed(2).replace(/\.00$/, '')}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">$${pkg.price}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>`
       : `<strong>$${pkg.price}</strong>`;
 
     tr.innerHTML = `
@@ -1093,7 +1093,7 @@ function editPackage(pkgId) {
   document.getElementById('packageFormId').value = pkg.id;
   document.getElementById('pkgName').value = pkg.name;
   document.getElementById('pkgCategory').value = pkg.category;
-  
+
   const fallbackType = ["Targeted Pain Relief", "Surfer & Local Recovery", "Weight Reduction & Toning"].includes(pkg.category) ? "Medical Care" : "Wellness Care";
   document.getElementById('pkgType').value = pkg.type || fallbackType;
 
@@ -1186,7 +1186,7 @@ function toggleSelectAllPackages(isChecked) {
 function handleRowCheckboxChange() {
   const rowCheckboxes = document.querySelectorAll('.pkg-row-select');
   const checkedBoxes = Array.from(rowCheckboxes).filter(cb => cb.checked);
-  
+
   const btnDelete = document.getElementById('btnDeleteSelected');
   if (!btnDelete) return;
 
@@ -1288,7 +1288,7 @@ function loadAdminBookings() {
 
       bookings.forEach(booking => {
         const tr = document.createElement('tr');
-        
+
         let treatmentsLabel = '';
         if (booking.treatments && Array.isArray(booking.treatments)) {
           treatmentsLabel = booking.treatments.map(t => `${t.name} ($${t.price})`).join(', ');
@@ -1303,10 +1303,10 @@ function loadAdminBookings() {
         let placedTimeFormatted = 'Just now';
         if (booking.createdAt) {
           try {
-            const dateObj = typeof booking.createdAt.toDate === 'function' 
-              ? booking.createdAt.toDate() 
+            const dateObj = typeof booking.createdAt.toDate === 'function'
+              ? booking.createdAt.toDate()
               : new Date(booking.createdAt);
-            
+
             placedTimeFormatted = dateObj.toLocaleString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -1449,7 +1449,7 @@ function updateCartUI() {
     floatingBtn.style.display = 'flex';
   } else {
     floatingBtn.style.display = 'none';
-    
+
     // Also close drawer if it is empty and open
     const drawer = document.getElementById('cartDrawer');
     if (drawer && drawer.classList.contains('active')) {
@@ -1480,7 +1480,7 @@ function updateCartUI() {
   // Sync the dropdown menu selections inside the booking form
   selectedTreatments = [...cart];
   updateSelectedChips();
-  
+
   // Update checkbox checks in dropdown
   document.querySelectorAll('#multiSelectDropdown input[type="checkbox"]').forEach(checkbox => {
     const pkgId = checkbox.id.replace('chk-', '');
@@ -1545,7 +1545,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', () => {
     const currentScroll = window.scrollY;
-    
+
     // Header effect
     if (currentScroll > 50) {
       header.classList.add('scrolled');
@@ -1561,7 +1561,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backToTopBtn.classList.remove('show');
       }
     }
-    
+
     lastScroll = currentScroll;
   });
 
@@ -1593,7 +1593,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- SPA ROUTING SYSTEM ----
   function navigate() {
     const hash = window.location.hash || '#home';
-    
+
     // Map hashes to view container IDs
     const routes = {
       '#home': 'view-home',
@@ -1636,10 +1636,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.nav-link, .nav-mobile-link').forEach(link => {
       link.classList.remove('active');
       const href = link.getAttribute('href');
-      
+
       // Highlight parent link if on a sub-anchor
-      const isParentMatch = href === hash || 
-        (hash === '#difference' && href === '#about') || 
+      const isParentMatch = href === hash ||
+        (hash === '#difference' && href === '#about') ||
         (hash === '#journey' && href === '#wellness-care') ||
         (hash === '#wellness-treatments' && href === '#wellness-care') ||
         (hash === '#medical-treatments' && href === '#medical-care') ||
@@ -2015,15 +2015,15 @@ function setThemeColor(theme) {
   const root = document.documentElement;
   const hero = document.getElementById('hero');
   const ctaFinal = document.querySelector('.cta-final');
-  
+
   // Reset active button class
   document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
   const activeBtn = document.getElementById(`btn-theme-${theme}`);
   if (activeBtn) activeBtn.classList.add('active');
-  
+
   let deep, rgb, medium, gradHero, gradCta;
-  
-  switch(theme) {
+
+  switch (theme) {
     case 'original':
       deep = '#1A4D2E'; rgb = '26, 77, 46'; medium = '#2D6A4F';
       gradHero = 'linear-gradient(165deg, #1A4D2E 0%, #163D27 40%, #0F2E1C 100%)';
@@ -2133,7 +2133,7 @@ function setThemeColor(theme) {
   } else {
     document.documentElement.classList.remove('light-theme');
   }
-  
+
   root.style.setProperty('--green-deep', deep);
   root.style.setProperty('--green-deep-rgb', rgb);
   root.style.setProperty('--green-medium', medium);
@@ -2168,15 +2168,15 @@ function initGallerySystem() {
 
 function getGoogleDriveFileId(url) {
   if (!url) return null;
-  
+
   // Try matching /file/d/FILE_ID/
   const dMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (dMatch) return dMatch[1];
-  
+
   // Try matching ?id=FILE_ID or &id=FILE_ID
   const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if (idMatch) return idMatch[1];
-  
+
   // Fallback to matching any 25+ character hash containing alphanumeric, dashes, and underscores
   const genericMatch = url.match(/([a-zA-Z0-9_-]{25,})/);
   return genericMatch ? genericMatch[1] : null;
