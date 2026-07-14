@@ -1299,6 +1299,26 @@ function loadAdminBookings() {
         const dateFormatted = formatDate(booking.date);
         const timeLabel = ALL_TIME_SLOTS.find(s => s.value === booking.time)?.label || booking.time;
 
+        // Format the booking placed timestamp (createdAt)
+        let placedTimeFormatted = 'Just now';
+        if (booking.createdAt) {
+          try {
+            const dateObj = typeof booking.createdAt.toDate === 'function' 
+              ? booking.createdAt.toDate() 
+              : new Date(booking.createdAt);
+            
+            placedTimeFormatted = dateObj.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true
+            });
+          } catch (e) {
+            console.error('Error parsing createdAt date:', e);
+          }
+        }
+
         const customerName = booking.fullName || booking.userName || 'Guest';
         const contactInfo = `
           <div>👤 ${customerName}</div>
@@ -1312,7 +1332,8 @@ function loadAdminBookings() {
           <td><span style="font-size:0.85rem;">${treatmentsLabel}</span></td>
           <td>
             <div>📅 ${dateFormatted}</div>
-            <div style="font-size:0.8rem;color:var(--text-muted);">🕐 ${timeLabel}</div>
+            <div style="font-size:0.8rem;color:var(--text-muted); margin-bottom: 0.4rem;">🕐 ${timeLabel}</div>
+            <div style="font-size:0.72rem; color:var(--gold-dark); border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 0.25rem;">📝 Placed: ${placedTimeFormatted}</div>
           </td>
           <td>
             <button class="btn-delete" onclick="cancelBookingByAdmin('${booking.id}', '${customerName.replace(/'/g, "\\'")}', '${dateFormatted}', '${timeLabel}')">
