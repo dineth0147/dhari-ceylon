@@ -972,6 +972,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   padding: 0.4rem 1.2rem;
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-gold);
+  z-index: 11;
 }
 
 .journey-duration {
