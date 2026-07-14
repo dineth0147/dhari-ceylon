@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhari Ceylon Wellness — Authentic Sri Lankan Ayurveda</title>
+  <meta name="description" content="Experience authentic Sri Lankan Ayurveda at Dhari Ceylon Wellness. Personalized treatments, expert therapists, and pure Ceylon herbs for your holistic healing journey.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============ HEADER / NAV ============ -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#home" class="logo">
+        <img src="logo.jpg" alt="Dhari Ceylon Ayurveda Wellness Clinic" class="logo-img">
+      </a>
+
+      <nav class="nav-desktop" id="navDesktop">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#wellness-care" class="nav-link">Wellness Care</a>
+        <a href="#medical-care" class="nav-link">Medical Care</a>
+        <a href="#my-bookings" class="nav-link" id="myBookingsNavLink" style="display:none;">My Bookings</a>
+        <a href="#admin-panel" class="nav-link" id="adminNavLink" style="display:none;">Admin Panel</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#gallery" class="nav-link">Gallery</a>
+        <button class="auth-btn" id="authBtnDesktop" onclick="handleAuthClick()">
+          <span class="auth-btn-text">Sign In</span>
+        </button>
+        <a href="#booking" class="nav-cta">Book Now</a>
+      </nav>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <nav class="nav-mobile" id="navMobile">
+      <a href="#about" class="nav-mobile-link">About</a>
+      <a href="#wellness-care" class="nav-mobile-link">Wellness Care</a>
+      <a href="#medical-care" class="nav-mobile-link">Medical Care</a>
+      <a href="#my-bookings" class="nav-mobile-link" id="myBookingsNavLinkMobile" style="display:none;">My Bookings</a>
+      <a href="#admin-panel" class="nav-mobile-link" id="adminNavLinkMobile" style="display:none;">Admin Panel</a>
+      <a href="#contact" class="nav-mobile-link">Contact</a>
+      <a href="#gallery" class="nav-mobile-link">Gallery</a>
+      <button class="auth-btn-mobile" id="authBtnMobile" onclick="handleAuthClick()">
+        <span class="auth-btn-text">Sign In with Google</span>
+      </button>
+      <a href="#booking" class="nav-mobile-cta">Book Now</a>
+    </nav>
+  </header>
+
+  <!-- ============ VIEW: HOME ============ -->
+  <div id="view-home" class="spa-view">
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+    <div class="hero-video-wrapper">
+      <video class="hero-video" autoplay loop muted playsinline>
+        <source src="hero-bg.mp4" type="video/mp4">
+      </video>
+      <div class="hero-video-overlay"></div>
+    </div>
+    <div class="hero-bg-pattern"></div>
+    <div class="container hero-content">
+      <div class="hero-logo animate-on-scroll">
+        <img src="logo.jpg" alt="Dhari Ceylon Ayurveda Wellness Clinic" class="hero-logo-img">
+      </div>
+      <h1 class="hero-title animate-on-scroll">
+        Restore Harmony to<br>
+        <span class="hero-accent">Mind, Body & Spirit</span>
+      </h1>
+      <p class="hero-subtitle animate-on-scroll">
+        Experience the ancient wisdom of Ceylon's finest Ayurvedic traditions in a sanctuary 
+        dedicated to your personalized wellness journey.
+      </p>
+      <div class="hero-actions animate-on-scroll">
+        <a href="#booking" class="btn btn-gold">Begin Your Healing Journey</a>
+        <a href="#wellness-care" class="btn btn-outline-light">Explore Wellness Care</a>
+      </div>
+      <div class="hero-stats animate-on-scroll">
+        <div class="hero-stat">
+          <span class="hero-stat-number">5000+</span>
+          <span class="hero-stat-label">Guests Healed</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-number">15+</span>
+          <span class="hero-stat-label">Expert Therapists</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-number">100%</span>
+          <span class="hero-stat-label">Pure Ceylon Herbs</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <span>Scroll to explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </div><!-- ============ END VIEW: HOME ============ -->
+
+  <!-- ============ VIEW: ABOUT ============ -->
+  <div id="view-about" class="spa-view" style="display:none;">
+    <!-- ============ ABOUT / PHILOSOPHY ============ -->
+    <section class="section section-cream" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image-column animate-on-scroll">
+          <div class="about-image-wrapper">
+            <div class="about-image" style="background-image: url('https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=600&h=800&fit=crop&q=80')"></div>
+            <div class="about-image-accent"></div>
+          </div>
+          <div class="about-experience-badge">
+            <span class="experience-number">100%</span>
+            <span class="experience-text">Natural &<br>Authentic Care</span>
+          </div>
+        </div>
+        <div class="about-content animate-on-scroll">
+          <div class="section-label">Our Story</div>
+          <h2 class="section-title">Where Ancient Wisdom Meets Modern Wellness</h2>
+          <p class="about-lead">
+            Welcome to <strong>Dhari Ceylon Wellness</strong>, a sanctuary dedicated to restoring harmony 
+            to your mind, body, and spirit.
+          </p>
+          <p>
+            Rooted in the time-honored traditions of authentic Sri Lankan Ayurveda, our center is a 
+            bridge between ancient medical wisdom and modern holistic well-being. Whether you seek 
+            deep clinical healing or a peaceful escape to recharge, we provide a nurturing space 
+            tailored entirely to your personal wellness journey.
+          </p>
+          <div class="about-vision" style="margin: 24px 0; padding: 16px 20px; background: rgba(10, 46, 38, 0.04); border-left: 4px solid var(--accent-gold); border-radius: 0 8px 8px 0;">
+            <h3 style="font-family: var(--font-secondary); color: var(--green-deep); font-size: 1.15rem; margin-top: 0; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px;">Our Vision</h3>
+            <p style="font-size: 0.92rem; line-height: 1.6; color: var(--text-dark); margin: 0; font-style: italic;">
+              "To be a globally recognized sanctuary of holistic healing, combining authentic Ceylon Ayurveda with the highest international standards of care to inspire a healthier, more balanced world."
+            </p>
+          </div>
+          <a href="#difference" class="btn btn-primary">Discover Our Difference</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE DHARI CEYLON DIFFERENCE ============ -->
+  <section class="section section-white" id="difference">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <div class="section-label">What Sets Us Apart</div>
+        <h2 class="section-title">The Dhari Ceylon Difference</h2>
+        <p class="section-subtitle">
+          True healing cannot be rushed, and it cannot be mass-produced. Every individual 
+          who walks through our doors is unique.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="pillar-card animate-on-scroll">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 48 48" fill="none"><path d="M24 6C24 6 10 16 10 26C10 33.18 15.82 39 23 39H25C32.18 39 38 33.18 38 26C38 16 24 6 24 6Z" stroke="currentColor" stroke-width="2"/><path d="M24 16V32" stroke="currentColor" stroke-width="1.5"/><path d="M18 24C18 24 21 28 24 28C27 28 30 24 30 24" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="pillar-number">01</div>
+          <h3 class="pillar-title">Doctor Consultation & Personalized Care</h3>
+          <p class="pillar-text">
+            Your journey begins at the source. Comprehensive consultation with certified Ayurvedic doctors 
+            to understand your unique <em>Prakriti</em> (body constitution) and craft a bespoke treatment plan.
+          </p>
+          <div class="pillar-highlight">We don't just treat symptoms — we target the root cause.</div>
+        </div>
+
+        <div class="pillar-card animate-on-scroll">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="16" r="6" stroke="currentColor" stroke-width="2"/><path d="M12 36C12 29.373 17.373 24 24 24C30.627 24 36 29.373 36 36" stroke="currentColor" stroke-width="2"/><path d="M20 12L24 8L28 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="pillar-number">02</div>
+          <h3 class="pillar-title">Expert Hands</h3>
+          <p class="pillar-text">
+            Highly trained therapists who are masters of traditional touch, oil application, and 
+            pressure-point therapies. Every stroke and herbal application is executed with precision 
+            and healing intent.
+          </p>
+          <div class="pillar-highlight">Profound understanding of anatomy & Ayurvedic principles.</div>
+        </div>
+
+        <div class="pillar-card animate-on-scroll">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 48 48" fill="none"><path d="M24 6L28 14H20L24 6Z" stroke="currentColor" stroke-width="2"/><path d="M24 14V42" stroke="currentColor" stroke-width="2"/><path d="M16 22C16 22 20 26 24 22C28 18 32 22 32 22" stroke="currentColor" stroke-width="1.5"/><path d="M14 30C14 30 19 34 24 30C29 26 34 30 34 30" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="pillar-number">03</div>
+          <h3 class="pillar-title">Pure Ceylon Herbs & Oils</h3>
+          <p class="pillar-text">
+            Sourcing only the finest, purest, most potent natural herbs, roots, and oils native 
+            to Sri Lanka. Medicines prepared with strict adherence to traditional standards for 
+            maximum therapeutic benefit.
+          </p>
+          <div class="pillar-highlight">Authentic ingredients. Uncompromised quality.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  </div><!-- ============ END VIEW: ABOUT ============ -->
+
+  <!-- ============ VIEW: WELLNESS CARE ============ -->
+  <div id="view-wellness-care" class="spa-view" style="display:none;">
+    <!-- ============ WELLNESS CATEGORIES ============ -->
+    <section class="section section-cream" id="wellness-care">
+      <div class="container">
+        <div class="section-header animate-on-scroll" style="margin-bottom: 24px;">
+          <div class="section-label">Nourish & Restore</div>
+          <h2 class="section-title">Wellness Care</h2>
+          <p class="section-subtitle">
+            Curated holistic rituals to soothe your senses, detoxify your body, and rejuvenate your spirit.
+          </p>
+        </div>
+
+        <!-- Navigation Buttons for Treatments and Packages -->
+        <div class="wellness-subnav animate-on-scroll" style="display: flex; justify-content: center; gap: 15px; margin: 0 auto 40px auto; max-width: 400px;">
+          <a href="#wellness-treatments" class="btn btn-primary" style="flex: 1; text-align: center; font-size: 0.95rem; border-radius: 50px; padding: 12px 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: 500; letter-spacing: 0.5px;">Treatments</a>
+          <a href="#journey" class="btn btn-gold" style="flex: 1; text-align: center; font-size: 0.95rem; border-radius: 50px; padding: 12px 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: 500; letter-spacing: 0.5px;">Packages</a>
+        </div>
+
+        <div id="wellness-treatments" style="scroll-margin-top: 100px;">
+          <div class="treatments-grid" id="wellnessGrid">
+            <!-- Injected dynamically by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MULTI-DAY WELLNESS JOURNEYS ============ -->
+    <section class="section section-white" id="journey" style="border-top: 1px solid #E5E0D8; scroll-margin-top: 100px;">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <div class="section-label">Immersive Experiences</div>
+          <h2 class="section-title">Multi-Day Wellness Journeys</h2>
+          <p class="section-subtitle">
+            For those seeking profound transformation — multi-day programs designed to 
+            detoxify, restore, and cultivate lasting vitality.
+          </p>
+        </div>
+
+        <div class="journey-grid" id="journeyGrid">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </div>
+    </section>
+  </div><!-- ============ END VIEW: WELLNESS CARE ============ -->
+
+  <!-- ============ VIEW: MEDICAL CARE ============ -->
+  <div id="view-medical-care" class="spa-view" style="display:none;">
+    <!-- ============ MEDICAL CATEGORIES ============ -->
+    <section class="section section-cream" id="medical-care">
+      <div class="container">
+        <div class="section-header animate-on-scroll" style="margin-bottom: 24px;">
+          <div class="section-label">Targeted Therapy</div>
+          <h2 class="section-title">Medical Care</h2>
+          <p class="section-subtitle">
+            Doctor-led clinical treatments designed to address chronic pain, inflammation, and recovery.
+          </p>
+        </div>
+
+        <!-- Navigation Buttons for Treatments and Packages -->
+        <div class="wellness-subnav animate-on-scroll" style="display: flex; justify-content: center; gap: 15px; margin: 0 auto 40px auto; max-width: 400px;">
+          <a href="#medical-treatments" class="btn btn-primary" style="flex: 1; text-align: center; font-size: 0.95rem; border-radius: 50px; padding: 12px 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: 500; letter-spacing: 0.5px;">Treatments</a>
+          <a href="#medical-journey" class="btn btn-gold" style="flex: 1; text-align: center; font-size: 0.95rem; border-radius: 50px; padding: 12px 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: 500; letter-spacing: 0.5px;">Packages</a>
+        </div>
+
+        <div id="medical-treatments" style="scroll-margin-top: 100px;">
+          <div class="treatments-grid" id="medicalGrid">
+            <!-- Injected dynamically by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MULTI-DAY MEDICAL JOURNEYS ============ -->
+    <section class="section section-white" id="medical-journey" style="border-top: 1px solid #E5E0D8; scroll-margin-top: 100px;">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <div class="section-label">Targeted Recovery</div>
+          <h2 class="section-title">Medical Care Packages</h2>
+          <p class="section-subtitle">
+            Comprehensive multi-day clinical programs customized by our doctors to address chronic issues and guide your long-term recovery.
+          </p>
+        </div>
+
+        <div class="journey-grid" id="medicalJourneyGrid">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </div>
+    </section>
+  </div><!-- ============ END VIEW: MEDICAL CARE ============ -->
+
+  <!-- ============ VIEW: BOOKING ============ -->
+  <div id="view-booking" class="spa-view" style="display:none;">
+    <!-- ============ BOOKING SECTION ============ -->
+    <section class="section section-white" id="booking">
+    <div class="container">
+      <div class="booking-grid">
+        <div class="booking-info animate-on-scroll">
+          <div class="section-label">Ready to Begin?</div>
+          <h2 class="section-title">Book Your Healing Journey</h2>
+          <p>
+            No account needed — simply select your treatment, pick a date, and provide your 
+            contact details. We'll confirm your appointment within hours.
+          </p>
+
+          <div class="booking-steps">
+            <div class="booking-step">
+              <div class="booking-step-num">1</div>
+              <div>
+                <strong>Choose Your Treatment</strong>
+                <p>Select from our range of Ayurvedic packages</p>
+              </div>
+            </div>
+            <div class="booking-step">
+              <div class="booking-step-num">2</div>
+              <div>
+                <strong>Pick Your Date & Time</strong>
+                <p>Flexible scheduling to fit your plans</p>
+              </div>
+            </div>
+            <div class="booking-step">
+              <div class="booking-step-num">3</div>
+              <div>
+                <strong>WhatsApp Confirmation</strong>
+                <p>Details sent directly to us via WhatsApp</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-trust">
+            <div class="trust-item">✓ No account required</div>
+            <div class="trust-item">✓ Free cancellation up to 24hrs</div>
+            <div class="trust-item">✓ Doctor consultation included</div>
+            <div class="trust-item">✓ Personalized treatment plan</div>
+          </div>
+        </div>
+
+        <div class="booking-form-wrapper animate-on-scroll">
+          <!-- Auth Gate Overlay -->
+          <div class="auth-gate" id="authGate">
+            <div class="auth-gate-content">
+              <div class="auth-gate-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h3>Sign in to Book</h3>
+              <p>Please sign in with your Google account to book a treatment session.</p>
+              <button class="btn btn-google" onclick="handleAuthClick()">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Sign in with Google
+              </button>
+            </div>
+          </div>
+
+          <form class="booking-form" id="bookingForm">
+            <h3 class="form-title">Appointment Details</h3>
+            <div class="form-user-info" id="formUserInfo" style="display:none;">
+              <img class="form-user-avatar" id="formUserAvatar" src="" alt="">
+              <div>
+                <div class="form-user-name" id="formUserName"></div>
+                <div class="form-user-email" id="formUserEmail"></div>
+              </div>
+            </div>
+
+            <div class="form-group select-treatments-group">
+              <label>Select Treatments *</label>
+              <div class="multi-select-input" id="multiSelectInput" onclick="toggleMultiSelectDropdown(event)">
+                <div class="selected-chips" id="selectedChips">
+                  <span class="placeholder-text">Choose treatment(s)...</span>
+                </div>
+                <div class="dropdown-arrow">▼</div>
+              </div>
+              <div class="multi-select-dropdown" id="multiSelectDropdown" style="display:none;" onclick="event.stopPropagation()">
+                <!-- Dynamically populated categories and treatment checkboxes -->
+              </div>
+              <input type="hidden" id="selectedTreatmentsHidden" required>
+            </div>
+
+            <div class="form-group">
+              <label for="fullName">Full Name *</label>
+              <input type="text" id="fullName" placeholder="Your full name" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="+94 77 123 4567">
+              </div>
+              <div class="form-group">
+                <label for="date">Preferred Date *</label>
+                <input type="date" id="date" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="time">Preferred Time *</label>
+              <select id="time" required>
+                <option value="">Select a time slot...</option>
+                <option value="09:00">9:00 AM</option>
+                <option value="10:00">10:00 AM</option>
+                <option value="11:00">11:00 AM</option>
+                <option value="12:00">12:00 PM</option>
+                <option value="13:00">1:00 PM</option>
+                <option value="14:00">2:00 PM</option>
+                <option value="15:00">3:00 PM</option>
+                <option value="16:00">4:00 PM</option>
+                <option value="17:00">5:00 PM</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="requests">Special Requests</label>
+              <textarea id="requests" rows="3" placeholder="Any allergies, health conditions, or special requests?"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-gold btn-full" id="bookingSubmitBtn">
+              <span class="btn-text">Book via WhatsApp</span>
+              <span class="btn-loader" style="display:none;">Sending...</span>
+            </button>
+            <p class="form-note">Sign in required • Booking sent via WhatsApp</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div><!-- ============ END VIEW: BOOKING ============ -->
+
+  <!-- ============ VIEW: MY BOOKINGS ============ -->
+  <div id="view-my-bookings" class="spa-view" style="display:none;">
+    <!-- ============ MY BOOKINGS ============ -->
+    <section class="section section-cream" id="my-bookings">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <div class="section-label">Your Appointments</div>
+        <h2 class="section-title">My Bookings</h2>
+        <p class="section-subtitle" id="myBookingsSubtitle">Sign in to view and manage your upcoming appointments.</p>
+      </div>
+
+      <!-- Not signed in state -->
+      <div class="my-bookings-auth" id="myBookingsAuth">
+        <div class="my-bookings-auth-card animate-on-scroll">
+          <div class="auth-gate-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3>Sign in to see your bookings</h3>
+          <p>View, manage, and cancel your upcoming appointments.</p>
+          <button class="btn btn-google" onclick="handleAuthClick()">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Sign in with Google
+          </button>
+        </div>
+      </div>
+
+      <!-- Signed in — bookings list -->
+      <div class="my-bookings-list" id="myBookingsList" style="display:none;">
+        <div class="my-bookings-cards" id="myBookingsCards">
+          <!-- Booking cards injected by JS -->
+        </div>
+        <div class="my-bookings-empty" id="myBookingsEmpty" style="display:none;">
+          <p>You don't have any upcoming bookings yet.</p>
+          <a href="#booking" class="btn btn-primary">Book a Treatment</a>
+        </div>
+      </div>
+    </div>
+  </div><!-- ============ END VIEW: MY BOOKINGS ============ -->
+
+  <!-- ============ VIEW: ADMIN PANEL ============ -->
+  <div id="view-admin-panel" class="spa-view" style="display:none;">
+    <!-- ============ ADMIN PANEL ============ -->
+    <section class="section section-white" id="admin-panel" style="display:none;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Management Console</div>
+        <h2 class="section-title">Admin Dashboard</h2>
+        <p class="section-subtitle">Manage treatment packages, pricing, and descriptions.</p>
+      </div>
+
+      <div class="admin-dashboard">
+        <!-- Sidebar/Actions -->
+        <div class="admin-actions">
+          <button class="btn btn-gold" onclick="showAddPackageForm()">+ Add New Package</button>
+          <div class="admin-stats">
+            <div class="stat-card">
+              <span class="stat-num" id="totalPackagesCount">0</span>
+              <span class="stat-label">Total Packages</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Dashboard View -->
+        <div class="admin-main">
+          <!-- Package Form (Add / Edit) - hidden by default -->
+          <div class="admin-form-card" id="packageFormCard" style="display:none;">
+            <h3 id="formActionTitle">Add New Package</h3>
+            <form id="adminPackageForm" onsubmit="handlePackageSubmit(event)">
+              <input type="hidden" id="packageFormId">
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="pkgName">Package Name *</label>
+                  <input type="text" id="pkgName" required placeholder="e.g. Shirodhara Ultimate Bliss">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="pkgCategory">Category *</label>
+                  <select id="pkgCategory" required onchange="toggleCategorySpecificFields()">
+                    <option value="Single Treatment">Single Treatment</option>
+                    <option value="Package">Package</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="pkgType">Care Type *</label>
+                  <select id="pkgType" required onchange="toggleCategorySpecificFields()">
+                    <option value="Wellness Care">Wellness Care</option>
+                    <option value="Medical Care">Medical Care</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="pkgPrice">Price ($) *</label>
+                  <input type="number" id="pkgPrice" required min="1" placeholder="e.g. 85">
+                </div>
+                <div class="form-group">
+                  <label for="pkgTag">Accent Tag (Optional)</label>
+                  <input type="text" id="pkgTag" placeholder="e.g. Most Popular, Coastal Special">
+                </div>
+              </div>
+
+              <div class="form-group" id="imageGroup">
+                <label for="pkgImage">Image URL *</label>
+                <input type="url" id="pkgImage" required placeholder="e.g. https://images.unsplash.com/...">
+              </div>
+
+              <div class="form-group" id="normalDescGroup">
+                <label for="pkgDesc">Description *</label>
+                <textarea id="pkgDesc" rows="3" placeholder="Describe the treatment and its benefits..."></textarea>
+              </div>
+
+              <!-- Multi-day Specific Fields -->
+              <div id="multidayFields" style="display:none;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="pkgDuration">Duration Label *</label>
+                    <input type="text" id="pkgDuration" placeholder="e.g. 3 Days">
+                  </div>
+                  <div class="form-group">
+                    <label for="pkgIdeal">Ideal For *</label>
+                    <input type="text" id="pkgIdeal" placeholder="e.g. Stressed professionals">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="pkgIncludes">Includes (one item per line) *</label>
+                  <textarea id="pkgIncludes" rows="5" placeholder="Initial doctor consultation&#10;Daily signature body treatments&#10;Herbal steam & detox therapies"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group checkbox-group">
+                <label class="admin-checkbox-label">
+                  <input type="checkbox" id="pkgIsFeatured">
+                  <span>Mark as Featured (shows prominent or with tag)</span>
+                </label>
+              </div>
+
+              <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">Save Package</button>
+                <button type="button" class="btn-cancel" onclick="hidePackageForm()">Cancel</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Packages Table/List -->
+          <div class="admin-packages-list">
+            <h3>Current Packages</h3>
+            <div class="table-responsive">
+              <table class="packages-table">
+                <thead>
+                  <tr>
+                    <th>Package</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Featured</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminPackagesTableBody">
+                  <!-- Injected by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Active Customer Bookings Table/List -->
+          <div class="admin-packages-list" style="margin-top: 2rem;">
+            <h3>Active Customer Bookings</h3>
+            <div class="table-responsive">
+              <table class="packages-table">
+                <thead>
+                  <tr>
+                    <th>Customer Name</th>
+                    <th>Contact Info</th>
+                    <th>Treatment(s) Booked</th>
+                    <th>Date & Time</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminBookingsTableBody">
+                  <!-- Injected dynamically by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- ============ END VIEW: ADMIN PANEL ============ -->
+
+  <!-- ============ VIEW: CONTACT & FAQ ============ -->
+  <div id="view-contact" class="spa-view" style="display:none;">
+    <!-- ============ CONTACT & MAP ============ -->
+    <section class="section section-cream" id="contact">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <div class="section-label">Visit Us</div>
+        <h2 class="section-title">Contact & Location</h2>
+      </div>
+
+      <div class="contact-grid">
+        <a href="https://maps.app.goo.gl/qtfkmqwanK65aoxL8?g_st=iw" target="_blank" class="contact-card animate-on-scroll">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>Location</h3>
+          <p>Southern Coast,<br>Sri Lanka</p>
+          <span style="font-size: 0.78rem; font-weight: 600; color: var(--gold-dark); margin-top: 0.75rem; display: inline-block;">📍 View on Google Maps</span>
+        </a>
+
+        <div class="contact-card animate-on-scroll">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <h3>Phone</h3>
+          <p>+94 77 123 4567<br>+94 11 234 5678</p>
+        </div>
+
+        <a href="mailto:Dhariceylon.official@gmail.com" class="contact-card animate-on-scroll">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h3>Email</h3>
+          <p style="word-break: break-all; font-size: 0.85rem;">Dhariceylon.official@gmail.com</p>
+          <span style="font-size: 0.78rem; font-weight: 600; color: var(--gold-dark); margin-top: 0.75rem; display: inline-block;">✉️ Send an Email</span>
+        </a>
+
+        <div class="contact-card animate-on-scroll">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3>Hours</h3>
+          <p>Monday – Sunday<br>9:00 AM – 8:00 PM</p>
+        </div>
+
+        <div class="contact-card animate-on-scroll">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </div>
+          <h3>Socials</h3>
+          <div style="display: flex; gap: 15px; justify-content: center; margin-top: 0.75rem;">
+            <a href="https://www.facebook.com/share/1F9GoypcTS/?mibextid=wwXIfr" target="_blank" class="contact-social-icon" style="color: var(--green-deep); transition: all 0.3s; display: inline-flex;" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/dhariceylon?igsh=c3U1NDU0a3RiY2pw&utm_source=qr" target="_blank" class="contact-social-icon" style="color: var(--green-deep); transition: all 0.3s; display: inline-flex;" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://www.tiktok.com/@dhari.ceylon?_r=1&_t=ZS-9816wxec1Zc" target="_blank" class="contact-social-icon" style="color: var(--green-deep); transition: all 0.3s; display: inline-flex;" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.62 4.17 1.09 1.15 2.58 1.83 4.14 1.95v3.83c-1.85-.04-3.66-.69-5.11-1.87-.08-.07-.16-.16-.24-.24v7.41c.05 1.5-.32 2.99-1.07 4.29-.86 1.4-2.18 2.45-3.73 2.92-1.74.55-3.64.44-5.3-.32-1.73-.74-3.13-2.16-3.86-3.88-1.01-2.22-.86-4.9.41-6.97.97-1.63 2.52-2.83 4.36-3.32.96-.27 1.97-.33 2.96-.21v3.91c-.7-.18-1.44-.14-2.12.11-.79.27-1.46.85-1.87 1.58-.57.96-.58 2.18-.03 3.15.42.79 1.16 1.39 2.03 1.62.99.28 2.07.13 2.95-.42.74-.46 1.25-1.22 1.41-2.07.1-.64.08-1.29.08-1.93V.02z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section section-white" id="faq">
+    <div class="container container-narrow">
+      <div class="section-header animate-on-scroll">
+        <div class="section-label">Common Questions</div>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item animate-on-scroll">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>What should I expect during my first visit?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Your journey begins with a comprehensive consultation with our certified Ayurvedic doctor who will assess your unique body constitution (Prakriti), discuss your health concerns, and create a personalized treatment plan. Wear comfortable clothing and arrive 15 minutes early.</p>
+          </div>
+        </div>
+
+        <div class="faq-item animate-on-scroll">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Do I need an account to book?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes, you'll need to sign in with your Google account to book a session. This allows you to manage and cancel your bookings at any time. Simply click "Sign In" in the top navigation — it takes just one click!</p>
+          </div>
+        </div>
+
+        <div class="faq-item animate-on-scroll">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>What is your cancellation policy?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Free cancellation up to 24 hours before your scheduled appointment. For multi-day wellness journeys, we require 48 hours notice. Rescheduling is always free and can be done through our booking confirmation link.</p>
+          </div>
+        </div>
+
+        <div class="faq-item animate-on-scroll">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Are your treatments suitable for children?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>We offer a gentle Kids Pedicure treatment suitable for children. For other treatments, we recommend consulting with our doctor first. Most of our therapeutic treatments are designed for adults aged 16 and above.</p>
+          </div>
+        </div>
+
+        <div class="faq-item animate-on-scroll">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>What preparation is needed before treatments?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Avoid heavy meals 2 hours before your appointment. Stay hydrated and wear loose, comfortable clothing. For oil-based treatments, we provide disposable garments. Inform us of any allergies or medical conditions when booking.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="cta-final">
+    <div class="container">
+      <div class="cta-final-content animate-on-scroll">
+        <h2>Your Journey to Wellness<br>Begins with a Single Step</h2>
+        <p>Let our doctors and expert therapists guide you toward optimal health and lasting vitality.</p>
+        <a href="#booking" class="btn btn-gold btn-lg">Begin Your Healing Journey</a>
+      </div>
+    </div>
+  </div><!-- ============ END VIEW: CONTACT & FAQ ============ -->
+
+  <!-- ============ VIEW: GALLERY ============ -->
+  <div id="view-gallery" class="spa-view" style="display:none;">
+    <!-- ============ GALLERY VIEW ============ -->
+    <section class="section section-cream" id="gallery">
+      <div class="container">
+        <div class="section-header animate-on-scroll">
+          <div class="section-label">Visual Journey</div>
+          <h2 class="section-title">Our Sanctuary Gallery</h2>
+          <p class="section-subtitle">
+            Take a visual tour of our tranquil gardens, clinical facilities, and traditional therapy suites.
+          </p>
+        </div>
+
+        <!-- Admin Only Gallery Upload Form -->
+        <div id="adminGalleryUpload" style="display: none; background: #fff; padding: 2rem; border-radius: var(--radius-lg); border: 1.5px solid rgba(212, 165, 116, 0.2); margin-bottom: var(--space-xl);" class="animate-on-scroll">
+          <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--green-deep); margin-bottom: 1.5rem;">Admin: Add Media to Gallery</h3>
+          <form id="galleryUploadForm" onsubmit="handleGalleryUpload(event)" style="display: grid; grid-template-columns: 2fr 1fr 2fr 120px; gap: 1rem; align-items: end;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="galleryUrl">Media URL *</label>
+              <input type="url" id="galleryUrl" required placeholder="Image/Video URL (e.g. from Unsplash or Pexels)">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="galleryType">Media Type *</label>
+              <select id="galleryType" required>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="galleryCaption">Caption (Optional)</label>
+              <input type="text" id="galleryCaption" placeholder="e.g. Herbal Steam Bath Room">
+            </div>
+            <button type="submit" class="btn btn-gold" style="width: 100%; height: 46px;">Upload</button>
+          </form>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </div>
+    </section>
+  </div><!-- ============ END VIEW: GALLERY ============ -->
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="logo.jpg" alt="Dhari Ceylon" class="footer-logo-img">
+          </div>
+          <p>Authentic Sri Lankan Ayurveda for your wellness journey. Where ancient healing wisdom meets modern luxury.</p>
+          <div class="footer-socials" style="display: flex; gap: 14px; margin-top: 15px;">
+            <a href="https://www.facebook.com/share/1F9GoypcTS/?mibextid=wwXIfr" target="_blank" class="footer-social-link" style="color: var(--cream); opacity: 0.8; transition: all 0.3s; display: inline-flex;" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/dhariceylon?igsh=c3U1NDU0a3RiY2pw&utm_source=qr" target="_blank" class="footer-social-link" style="color: var(--cream); opacity: 0.8; transition: all 0.3s; display: inline-flex;" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://www.tiktok.com/@dhari.ceylon?_r=1&_t=ZS-9816wxec1Zc" target="_blank" class="footer-social-link" style="color: var(--cream); opacity: 0.8; transition: all 0.3s; display: inline-flex;" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.62 4.17 1.09 1.15 2.58 1.83 4.14 1.95v3.83c-1.85-.04-3.66-.69-5.11-1.87-.08-.07-.16-.16-.24-.24v7.41c.05 1.5-.32 2.99-1.07 4.29-.86 1.4-2.18 2.45-3.73 2.92-1.74.55-3.64.44-5.3-.32-1.73-.74-3.13-2.16-3.86-3.88-1.01-2.22-.86-4.9.41-6.97.97-1.63 2.52-2.83 4.36-3.32.96-.27 1.97-.33 2.96-.21v3.91c-.7-.18-1.44-.14-2.12.11-.79.27-1.46.85-1.87 1.58-.57.96-.58 2.18-.03 3.15.42.79 1.16 1.39 2.03 1.62.99.28 2.07.13 2.95-.42.74-.46 1.25-1.22 1.41-2.07.1-.64.08-1.29.08-1.93V.02z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-links-group">
+          <h4>Quick Links</h4>
+          <a href="#about">About Us</a>
+          <a href="#treatments">Treatments</a>
+          <a href="#journey">Wellness Journeys</a>
+          <a href="#booking">Book Now</a>
+          <a href="#faq">FAQ</a>
+        </div>
+
+        <div class="footer-links-group">
+          <h4>Contact</h4>
+          <a href="mailto:Dhariceylon.official@gmail.com">Dhariceylon.official@gmail.com</a>
+          <a href="tel:+94771234567">+94 77 123 4567</a>
+          <a href="https://maps.app.goo.gl/qtfkmqwanK65aoxL8?g_st=iw" target="_blank" style="margin-top: 0.5rem; opacity: 0.7; font-size: 0.85rem; display: block; color: var(--cream);">📍 Southern Coast, Sri Lanka</a>
+          <p style="opacity: 0.7; font-size: 0.85rem;">Mon–Sun: 9AM – 8PM</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Dhari Ceylon Wellness. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ BOOKING SUCCESS MODAL ============ -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-content">
+      <div class="modal-icon modal-icon-whatsapp">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </div>
+      <h3>Booking Sent via WhatsApp!</h3>
+      <p>Your booking details have been sent to Dhari Ceylon Wellness. We'll confirm your appointment shortly.</p>
+      <p class="modal-slot-info" id="modalSlotInfo"></p>
+      <button class="btn btn-primary" onclick="closeModal()">Done</button>
+    </div>
+  </div>
+
+  <!-- ============ SIDE CART DRAWER ============ -->
+  <div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="toggleCartDrawer()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <h3>Your Treatment Cart</h3>
+      <button class="cart-close-btn" onclick="toggleCartDrawer()">×</button>
+    </div>
+    <div class="cart-drawer-items" id="cartDrawerItems">
+      <!-- Dynamically filled by JS -->
+    </div>
+    <div class="cart-drawer-footer">
+      <div class="cart-total-row">
+        <span>Total Price:</span>
+        <strong id="cartTotalSum">$0</strong>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="handleCartCheckout()">Book Now</button>
+      <button class="btn-cancel btn-full" onclick="clearCart()" style="margin-top: 0.5rem; text-align: center;">Clear Cart</button>
+    </div>
+  </div>
+
+  <!-- Floating Cart Button -->
+  <div class="floating-cart-btn" id="floatingCartBtn" onclick="toggleCartDrawer()" style="display: none;">
+    <span class="cart-icon">🛒</span>
+    <span class="floating-cart-badge" id="floatingCartBadge">0</span>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+  </button>
+
+  <!-- Firebase SDK (compat mode for simplicity) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

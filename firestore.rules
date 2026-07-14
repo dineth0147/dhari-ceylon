@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Check if the request is from an administrator
+    function isAdmin() {
+      return request.auth != null && 
+        (request.auth.token.email == 'dinethsachinthagama@gmail.com' || 
+         request.auth.token.email == 'dinet.t23@gmail.com' ||
+         request.auth.token.email == 'supunepa4@gmail.com' ||
+         request.auth.token.email == 'dhariceylon111@gmail.com' ||
+         request.auth.token.email == 'dhariceylon.official@gmail.com');
+    }
+
+    // Rules for Treatment Packages
+    match /packages/{packageId} {
+      allow read: if true; // Anyone can view packages
+      allow write: if isAdmin(); // Only admins can create, edit, or delete packages
+    }
+
+    // Rules for Customer Bookings
+    match /bookings/{bookingId} {
+      // Anyone can create a booking if logged in
+      allow create: if request.auth != null;
+      
+      // Admins can read/delete all bookings; users can read/delete their own bookings
+      allow read: if request.auth != null && (isAdmin() || resource.data.userId == request.auth.uid);
+      allow delete: if request.auth != null && (isAdmin() || resource.data.userId == request.auth.uid);
+      
+      // Update is not used by customers, only admins can modify booking structures
+      allow update: if isAdmin();
+    }
+
+    // Rules for Sanctuary Gallery
+    match /gallery/{mediaId} {
+      allow read: if true; // Anyone can view the gallery
+      allow write: if isAdmin(); // Only admins can upload or delete gallery items
+    }
+  }
+}
