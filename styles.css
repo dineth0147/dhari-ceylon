@@ -2970,21 +2970,22 @@ select option:disabled {
   left: 1.5rem;
 }
 
-/* Large High-Visibility Discount Badge */
+/* Large High-Visibility Discount Badge (3x Larger & Extra Bold) */
 .discount-percent-badge {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #e0a96d, #b37d4e);
   color: #ffffff !important;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 6px 14px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  padding: 10px 24px;
   border-radius: var(--radius-full);
-  box-shadow: 0 4px 15px rgba(212, 165, 116, 0.45);
+  box-shadow: 0 8px 25px rgba(179, 125, 78, 0.6);
   z-index: 10;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.5);
   pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
