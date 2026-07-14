@@ -599,28 +599,7 @@ async function cancelBooking(bookingId, treatment, date, time) {
  */
 function initPackagesSystem() {
   packagesListener = db.collection('packages')
-    .onSnapshot(async (snapshot) => {
-      let hasMetadataDoc = false;
-      let isCollectionEmpty = true;
-
-      snapshot.forEach(doc => {
-        if (doc.id === '_seeding_metadata') {
-          hasMetadataDoc = true;
-        } else {
-          isCollectionEmpty = false;
-        }
-      });
-
-      if (isCollectionEmpty && !hasMetadataDoc) {
-        console.log('No treatments found and never seeded. Seeding Firestore with default packages...');
-        try {
-          await seedDefaultPackages();
-        } catch (err) {
-          console.error('Error seeding packages:', err);
-        }
-        return; // The next snapshot trigger will render
-      }
-
+    .onSnapshot((snapshot) => {
       loadedPackages = [];
       snapshot.forEach(doc => {
         if (doc.id !== '_seeding_metadata') {
@@ -1250,6 +1229,19 @@ async function deleteSelectedPackages() {
   } finally {
     const btnDelete = document.getElementById('btnDeleteSelected');
     if (btnDelete) btnDelete.disabled = false;
+  }
+}
+
+async function triggerDatabaseSeed() {
+  const confirmed = confirm('Are you sure you want to seed the database with the default Ayurveda packages and treatments? This will add them to your current database.');
+  if (!confirmed) return;
+
+  try {
+    await seedDefaultPackages();
+    alert('Default packages seeded successfully!');
+  } catch (error) {
+    console.error('Error seeding packages:', error);
+    alert('Failed to seed packages. Please check if your Firestore security rules allow writes.');
   }
 }
 
