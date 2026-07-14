@@ -600,15 +600,32 @@ async function cancelBooking(bookingId, treatment, date, time) {
 function initPackagesSystem() {
   packagesListener = db.collection('packages')
     .onSnapshot(async (snapshot) => {
-      if (snapshot.empty) {
-        console.log('No treatments found. Seeding Firestore with default packages...');
-        await seedDefaultPackages();
+      let hasMetadataDoc = false;
+      let isCollectionEmpty = true;
+
+      snapshot.forEach(doc => {
+        if (doc.id === '_seeding_metadata') {
+          hasMetadataDoc = true;
+        } else {
+          isCollectionEmpty = false;
+        }
+      });
+
+      if (isCollectionEmpty && !hasMetadataDoc) {
+        console.log('No treatments found and never seeded. Seeding Firestore with default packages...');
+        try {
+          await seedDefaultPackages();
+        } catch (err) {
+          console.error('Error seeding packages:', err);
+        }
         return; // The next snapshot trigger will render
       }
 
       loadedPackages = [];
       snapshot.forEach(doc => {
-        loadedPackages.push({ id: doc.id, ...doc.data() });
+        if (doc.id !== '_seeding_metadata') {
+          loadedPackages.push({ id: doc.id, ...doc.data() });
+        }
       });
 
       // Sort locally by category then name
@@ -634,6 +651,11 @@ async function seedDefaultPackages() {
     const docRef = db.collection('packages').doc();
     batch.set(docRef, pkg);
   });
+  
+  // Set seeding metadata doc to prevent auto-reseeding when database is cleared
+  const metaRef = db.collection('packages').doc('_seeding_metadata');
+  batch.set(metaRef, { seeded: true, seededAt: firebase.firestore.FieldValue.serverTimestamp() });
+
   return batch.commit();
 }
 
