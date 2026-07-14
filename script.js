@@ -988,8 +988,14 @@ function renderAdminDashboard() {
   tableBody.innerHTML = '';
   countLabel.textContent = loadedPackages.length;
 
+  // Reset checkboxes states
+  const masterCheckbox = document.getElementById('selectAllPackages');
+  if (masterCheckbox) masterCheckbox.checked = false;
+  const btnDelete = document.getElementById('btnDeleteSelected');
+  if (btnDelete) btnDelete.style.display = 'none';
+
   if (loadedPackages.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No packages loaded.</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No packages loaded.</td></tr>';
     return;
   }
 
@@ -1002,6 +1008,7 @@ function renderAdminDashboard() {
       : `<strong>$${pkg.price}</strong>`;
 
     tr.innerHTML = `
+      <td style="text-align: center;"><input type="checkbox" class="pkg-row-select" value="${pkg.id}" onchange="handleRowCheckboxChange()" style="transform: scale(1.2); cursor: pointer;"></td>
       <td><strong>${pkg.name}</strong></td>
       <td><span class="admin-table-category" style="background:var(--sand-dark); font-weight:600; color:var(--green-deep);">${typeLabel}</span></td>
       <td><span class="admin-table-category">${pkg.category}</span></td>
@@ -1164,6 +1171,63 @@ async function deletePackage(pkgId, pkgName) {
   } catch (error) {
     console.error('Error deleting package:', error);
     alert('Failed to delete package. Please try again.');
+  }
+}
+
+function toggleSelectAllPackages(isChecked) {
+  const rowCheckboxes = document.querySelectorAll('.pkg-row-select');
+  rowCheckboxes.forEach(cb => {
+    cb.checked = isChecked;
+  });
+  handleRowCheckboxChange();
+}
+
+function handleRowCheckboxChange() {
+  const rowCheckboxes = document.querySelectorAll('.pkg-row-select');
+  const checkedBoxes = Array.from(rowCheckboxes).filter(cb => cb.checked);
+  
+  const btnDelete = document.getElementById('btnDeleteSelected');
+  if (!btnDelete) return;
+
+  if (checkedBoxes.length > 0) {
+    btnDelete.style.display = 'block';
+    btnDelete.textContent = `Delete Selected (${checkedBoxes.length})`;
+  } else {
+    btnDelete.style.display = 'none';
+  }
+}
+
+async function deleteSelectedPackages() {
+  const rowCheckboxes = document.querySelectorAll('.pkg-row-select');
+  const checkedBoxes = Array.from(rowCheckboxes).filter(cb => cb.checked);
+  const idsToDelete = checkedBoxes.map(cb => cb.value);
+
+  if (idsToDelete.length === 0) return;
+
+  const confirmed = confirm(`Are you sure you want to delete the ${idsToDelete.length} selected package(s)?`);
+  if (!confirmed) return;
+
+  try {
+    const btnDelete = document.getElementById('btnDeleteSelected');
+    if (btnDelete) {
+      btnDelete.disabled = true;
+      btnDelete.textContent = 'Deleting...';
+    }
+
+    const batch = db.batch();
+    idsToDelete.forEach(id => {
+      const ref = db.collection('packages').doc(id);
+      batch.delete(ref);
+    });
+
+    await batch.commit();
+    alert(`Successfully deleted ${idsToDelete.length} package(s).`);
+  } catch (error) {
+    console.error('Error during bulk deletion:', error);
+    alert('An error occurred while deleting packages. Please try again.');
+  } finally {
+    const btnDelete = document.getElementById('btnDeleteSelected');
+    if (btnDelete) btnDelete.disabled = false;
   }
 }
 

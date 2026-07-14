@@ -573,11 +573,15 @@
 
           <!-- Packages Table/List -->
           <div class="admin-packages-list">
-            <h3>Current Packages</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+              <h3 style="margin-bottom: 0;">Current Packages</h3>
+              <button class="btn" id="btnDeleteSelected" onclick="deleteSelectedPackages()" style="background: #dc3545; color: #fff; border: none; padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; display: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);">Delete Selected</button>
+            </div>
             <div class="table-responsive">
               <table class="packages-table">
                 <thead>
                   <tr>
+                    <th style="width: 45px; text-align: center;"><input type="checkbox" id="selectAllPackages" onchange="toggleSelectAllPackages(this.checked)" style="transform: scale(1.2); cursor: pointer;"></th>
                     <th>Package</th>
                     <th>Type</th>
                     <th>Category</th>
