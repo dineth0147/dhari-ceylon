@@ -653,6 +653,16 @@ function renderTreatmentsUI() {
     return medicalCats.includes(pkg.category) ? "Medical Care" : "Wellness Care";
   };
 
+  // Helper to render high-contrast discounted pricing
+  const getPriceHTML = (pkg) => {
+    if (pkg.discount > 0) {
+      const discountedPrice = pkg.price * (1 - pkg.discount / 100);
+      const formattedPrice = discountedPrice.toFixed(2).replace(/\.00$/, '');
+      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.5rem; font-weight: normal;">$${pkg.price}</span><strong>$${formattedPrice}</strong>`;
+    }
+    return `<strong>$${pkg.price}</strong>`;
+  };
+
   if (wellnessGrid) {
     wellnessGrid.innerHTML = '';
     const wellnessPkgs = loadedPackages.filter(p => p.category !== 'Package' && getPackageType(p) === 'Wellness Care');
@@ -675,7 +685,7 @@ function renderTreatmentsUI() {
             <h3>${pkg.name}</h3>
             <p>${pkg.description}</p>
             <div class="treatment-card-price" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
-              <span>Price: <strong>$${pkg.price}</strong></span>
+              <span>Price: ${getPriceHTML(pkg)}</span>
               <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
                 ${isInCart ? 'Remove' : 'Add'}
               </button>
@@ -710,7 +720,7 @@ function renderTreatmentsUI() {
               <p>${pkg.description}</p>
             </div>
             <div class="treatment-card-price" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
-              <span>Price: <strong>$${pkg.price}</strong></span>
+              <span>Price: ${getPriceHTML(pkg)}</span>
               <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
                 ${isInCart ? 'Remove' : 'Add'}
               </button>
@@ -748,7 +758,7 @@ function renderTreatmentsUI() {
           ${includesHtml ? `<ul class="journey-includes">${includesHtml}</ul>` : ''}
           ${pkg.ideal ? `<div class="journey-ideal"><strong>Ideal for:</strong> ${pkg.ideal}</div>` : ''}
           <div class="journey-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1rem;">
-            <span class="journey-price">From <strong>$${pkg.price}</strong></span>
+            <span class="journey-price">From ${getPriceHTML(pkg)}</span>
             <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
               ${isInCart ? 'Remove' : 'Add'}
             </button>
@@ -784,7 +794,7 @@ function renderTreatmentsUI() {
           ${includesHtml ? `<ul class="journey-includes">${includesHtml}</ul>` : ''}
           ${pkg.ideal ? `<div class="journey-ideal"><strong>Ideal for:</strong> ${pkg.ideal}</div>` : ''}
           <div class="journey-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1rem;">
-            <span class="journey-price">From <strong>$${pkg.price}</strong></span>
+            <span class="journey-price">From ${getPriceHTML(pkg)}</span>
             <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
               ${isInCart ? 'Remove' : 'Add'}
             </button>
@@ -824,11 +834,19 @@ function renderBookingFormDropdowns() {
       optionRow.className = 'dropdown-option-row';
 
       const isChecked = selectedTreatments.some(t => t.id === pkg.id);
+      const discountedPrice = pkg.discount > 0 ? pkg.price * (1 - pkg.discount / 100) : pkg.price;
+      const formattedPrice = discountedPrice.toFixed(2).replace(/\.00$/, '');
 
       optionRow.innerHTML = `
         <label class="dropdown-checkbox-label">
-          <input type="checkbox" id="chk-${pkg.id}" ${isChecked ? 'checked' : ''} onchange="handleTreatmentToggle('${pkg.id}', '${pkg.name.replace(/'/g, "\\'")}', ${pkg.price}, this.checked)">
-          <span class="option-text">${pkg.name} <span class="option-price">($${pkg.price})</span></span>
+          <input type="checkbox" id="chk-${pkg.id}" ${isChecked ? 'checked' : ''} onchange="handleTreatmentToggle('${pkg.id}', '${pkg.name.replace(/'/g, "\\'")}', ${discountedPrice}, this.checked)">
+          <span class="option-text">
+            ${pkg.name} 
+            <span class="option-price">
+              ${pkg.discount > 0 ? `<span style="text-decoration: line-through; opacity: 0.55; margin-right: 4px;">$${pkg.price}</span>` : ''}
+              $${formattedPrice}
+            </span>
+          </span>
         </label>
       `;
       catGroup.appendChild(optionRow);
@@ -973,11 +991,16 @@ function renderAdminDashboard() {
   loadedPackages.forEach(pkg => {
     const tr = document.createElement('tr');
     const typeLabel = pkg.type || (["Targeted Pain Relief", "Surfer & Local Recovery", "Weight Reduction & Toning"].includes(pkg.category) ? "Medical Care" : "Wellness Care");
+    
+    const priceDisplay = pkg.discount > 0 
+      ? `<strong>$${(pkg.price * (1 - pkg.discount / 100)).toFixed(2).replace(/\.00$/, '')}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">$${pkg.price}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>` 
+      : `<strong>$${pkg.price}</strong>`;
+
     tr.innerHTML = `
       <td><strong>${pkg.name}</strong></td>
       <td><span class="admin-table-category" style="background:var(--sand-dark); font-weight:600; color:var(--green-deep);">${typeLabel}</span></td>
       <td><span class="admin-table-category">${pkg.category}</span></td>
-      <td><strong>$${pkg.price}</strong></td>
+      <td>${priceDisplay}</td>
       <td>${pkg.isFeatured ? '⭐ Yes' : 'No'}</td>
       <td class="admin-table-actions">
         <button class="btn-edit" onclick="editPackage('${pkg.id}')">Edit</button>
@@ -1062,6 +1085,7 @@ function editPackage(pkgId) {
   document.getElementById('pkgType').value = pkg.type || fallbackType;
 
   document.getElementById('pkgPrice').value = pkg.price;
+  document.getElementById('pkgDiscount').value = pkg.discount || '';
   document.getElementById('pkgTag').value = pkg.tag || '';
   document.getElementById('pkgImage').value = pkg.image || '';
   document.getElementById('pkgDesc').value = pkg.description;
@@ -1095,6 +1119,7 @@ async function handlePackageSubmit(e) {
     category: category,
     type: type,
     price: Number(document.getElementById('pkgPrice').value),
+    discount: Number(document.getElementById('pkgDiscount').value) || 0,
     tag: document.getElementById('pkgTag').value,
     image: type === 'Medical Care' ? '' : document.getElementById('pkgImage').value,
     description: document.getElementById('pkgDesc').value,
@@ -1262,10 +1287,13 @@ function toggleCartItem(pkgId) {
     cart.splice(itemIndex, 1);
   } else {
     // Add to cart
+    const discountedPrice = pkg.discount > 0 ? pkg.price * (1 - pkg.discount / 100) : pkg.price;
+    const finalPrice = Number(discountedPrice.toFixed(2).replace(/\.00$/, ''));
+
     cart.push({
       id: pkg.id,
       name: pkg.name,
-      price: pkg.price,
+      price: finalPrice,
       category: pkg.category
     });
 
