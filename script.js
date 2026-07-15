@@ -1134,7 +1134,7 @@ async function handlePackageSubmit(e) {
     price: Number(document.getElementById('pkgPrice').value),
     discount: Number(document.getElementById('pkgDiscount').value) || 0,
     tag: document.getElementById('pkgTag').value,
-    image: type === 'Medical Care' ? '' : document.getElementById('pkgImage').value,
+    image: type === 'Medical Care' ? '' : parseGoogleDriveUrl(document.getElementById('pkgImage').value, 'image'),
     description: document.getElementById('pkgDesc').value,
     isFeatured: document.getElementById('pkgIsFeatured').checked
   };
