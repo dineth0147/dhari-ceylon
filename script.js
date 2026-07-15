@@ -681,7 +681,7 @@ function renderTreatmentsUI() {
         card.innerHTML = `
           ${isFeatured ? `<div class="journey-premium-badge">${pkg.tag || 'Most Popular'}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge">${pkg.discount}% OFF</div>` : ''}
-          <div class="treatment-card-image" style="background-image: url('${pkg.image}')"></div>
+          <div class="treatment-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}')"></div>
           <div class="treatment-card-content">
             ${(!isFeatured && pkg.tag) ? `<div class="treatment-card-tag">${pkg.tag}</div>` : ''}
             <h3>${pkg.name}</h3>
@@ -755,7 +755,7 @@ function renderTreatmentsUI() {
         card.innerHTML = `
           ${pkg.tag ? `<div class="journey-premium-badge">${pkg.tag}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge" style="top: 1.5rem; right: 2rem;">${pkg.discount}% OFF</div>` : ''}
-          ${pkg.image ? `<div class="journey-card-image" style="background-image: url('${pkg.image}'); height: 220px; background-size: cover; background-position: center; border-radius: var(--radius-md); margin-bottom: 1.5rem;"></div>` : ''}
+          ${pkg.image ? `<div class="journey-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}'); height: 220px; background-size: cover; background-position: center; border-radius: var(--radius-md); margin-bottom: 1.5rem;"></div>` : ''}
           <div class="journey-duration">${pkg.duration || 'Retreat'}</div>
           <h3 class="journey-title">${pkg.name}</h3>
           <p class="journey-desc">${pkg.description}</p>
@@ -2187,8 +2187,12 @@ function parseGoogleDriveUrl(url, type) {
   if (url.includes('drive.google.com') || url.includes('docs.google.com')) {
     const fileId = getGoogleDriveFileId(url);
     if (fileId) {
-      // Both images and videos on Google Drive must use the preview endpoint inside an iframe
-      return `https://drive.google.com/file/d/${fileId}/preview`;
+      if (type === 'video') {
+        return `https://drive.google.com/file/d/${fileId}/preview`;
+      } else {
+        // Direct raw image URL for Google Drive files
+        return `https://lh3.googleusercontent.com/d/${fileId}`;
+      }
     }
   }
   return url;
