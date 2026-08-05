@@ -549,7 +549,7 @@ function createBookingCard(booking) {
   // Render multiple treatments if it is an array
   let treatmentsHtml = '';
   if (booking.treatments && Array.isArray(booking.treatments)) {
-    treatmentsHtml = booking.treatments.map(t => `<div class="booking-card-treatment-item">🌿 ${t.name} (Rs. ${Number(t.price).toLocaleString()})</div>`).join('');
+    treatmentsHtml = booking.treatments.map(t => `<div class="booking-card-treatment-item">🌿 ${t.name} (LKR ${Number(t.price).toLocaleString()})</div>`).join('');
   } else {
     treatmentsHtml = `<div class="booking-card-treatment-item">🌿 ${booking.treatmentLabel || booking.treatment}</div>`;
   }
@@ -667,9 +667,9 @@ function renderTreatmentsUI() {
     if (pkg.discount > 0) {
       const discountedPrice = pkg.price * (1 - pkg.discount / 100);
       const formattedPrice = Math.round(discountedPrice).toLocaleString();
-      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.4rem; font-weight: normal;">Rs. ${Number(pkg.price).toLocaleString()}</span><strong>Rs. ${formattedPrice}</strong>`;
+      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.4rem; font-weight: normal;">LKR ${Number(pkg.price).toLocaleString()}</span><strong>LKR ${formattedPrice}</strong>`;
     }
-    return `<strong>Rs. ${Number(pkg.price).toLocaleString()}</strong>`;
+    return `<strong>LKR ${Number(pkg.price).toLocaleString()}</strong>`;
   };
 
   if (wellnessGrid) {
@@ -856,8 +856,8 @@ function renderBookingFormDropdowns() {
           <span class="option-text">
             ${pkg.name} 
             <span class="option-price">
-              ${pkg.discount > 0 ? `<span style="text-decoration: line-through; opacity: 0.55; margin-right: 4px;">Rs. ${Number(pkg.price).toLocaleString()}</span>` : ''}
-              Rs. ${Math.round(discountedPrice).toLocaleString()}
+              ${pkg.discount > 0 ? `<span style="text-decoration: line-through; opacity: 0.55; margin-right: 4px;">LKR ${Number(pkg.price).toLocaleString()}</span>` : ''}
+              LKR ${Math.round(discountedPrice).toLocaleString()}
               ${pkg.discount > 0 ? `<span style="font-size: 0.75rem; color: var(--gold-dark); margin-left: 4px; font-weight: bold;">(${pkg.discount}% OFF)</span>` : ''}
             </span>
           </span>
@@ -979,7 +979,7 @@ function updateBookingButton() {
     btnText.textContent = 'Book via WhatsApp';
   } else {
     const total = selectedTreatments.reduce((sum, t) => sum + Number(t.price), 0);
-    btnText.textContent = `Book ${selectedTreatments.length} Session${selectedTreatments.length > 1 ? 's' : ''} (Rs. ${total.toLocaleString()}) via WhatsApp`;
+    btnText.textContent = `Book ${selectedTreatments.length} Session${selectedTreatments.length > 1 ? 's' : ''} (LKR ${total.toLocaleString()}) via WhatsApp`;
   }
 }
 
@@ -1013,8 +1013,8 @@ function renderAdminDashboard() {
     const typeLabel = pkg.type || (["Targeted Pain Relief", "Surfer & Local Recovery", "Weight Reduction & Toning"].includes(pkg.category) ? "Medical Care" : "Wellness Care");
 
     const priceDisplay = pkg.discount > 0
-      ? `<strong>Rs. ${Math.round(pkg.price * (1 - pkg.discount / 100)).toLocaleString()}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">Rs. ${Number(pkg.price).toLocaleString()}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>`
-      : `<strong>Rs. ${Number(pkg.price).toLocaleString()}</strong>`;
+      ? `<strong>LKR ${Math.round(pkg.price * (1 - pkg.discount / 100)).toLocaleString()}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">LKR ${Number(pkg.price).toLocaleString()}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>`
+      : `<strong>LKR ${Number(pkg.price).toLocaleString()}</strong>`;
 
     let addedOnFormatted = '—';
     if (pkg.createdAt) {
@@ -1980,10 +1980,10 @@ function buildWhatsAppMessage(data) {
   message += `🧖 *Treatment Package(s):*\n`;
   let totalCost = 0;
   data.treatments.forEach(t => {
-    message += `  • ${t.name} (Rs. ${Number(t.price).toLocaleString()})\n`;
+    message += `  • ${t.name} (LKR ${Number(t.price).toLocaleString()})\n`;
     totalCost += Number(t.price);
   });
-  message += `\n💵 *Total Price:* Rs. ${totalCost.toLocaleString()}\n\n`;
+  message += `\n💵 *Total Price:* LKR ${totalCost.toLocaleString()}\n\n`;
 
   message += `👤 *Name:* ${data.fullName}\n`;
   if (currentUser && currentUser.email) {
