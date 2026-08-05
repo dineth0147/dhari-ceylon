@@ -23,11 +23,13 @@ service cloud.firestore {
       // Anyone can create a booking if logged in
       allow create: if request.auth != null;
       
-      // Admins can read/delete all bookings; users can read/delete their own bookings
-      allow read: if request.auth != null && (isAdmin() || resource.data.userId == request.auth.uid);
+      // All authenticated users can read bookings (needed for time slot availability)
+      allow read: if request.auth != null;
+      
+      // Admins can delete any booking; users can only delete their own
       allow delete: if request.auth != null && (isAdmin() || resource.data.userId == request.auth.uid);
       
-      // Update is not used by customers, only admins can modify booking structures
+      // Only admins can modify booking structures
       allow update: if isAdmin();
     }
 
