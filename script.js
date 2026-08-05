@@ -1016,7 +1016,7 @@ function renderAdminDashboard() {
       ? `<strong>LKR ${Math.round(pkg.price * (1 - pkg.discount / 100)).toLocaleString()}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">LKR ${Number(pkg.price).toLocaleString()}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>`
       : `<strong>LKR ${Number(pkg.price).toLocaleString()}</strong>`;
 
-    let addedOnFormatted = '—';
+    let addedOnFormatted = 'Initial';
     if (pkg.createdAt) {
       const dateObj = pkg.createdAt.toDate ? pkg.createdAt.toDate() : new Date(pkg.createdAt);
       if (!isNaN(dateObj.getTime())) {
