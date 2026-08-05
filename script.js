@@ -1081,10 +1081,10 @@ function toggleCategorySpecificFields() {
     multidayFields.style.display = 'block';
     normalDescGroup.style.display = 'block'; // Description is still used as summary
 
-    // Add required dynamic attributes
+    // Duration, Ideal For, Includes are all optional
     durationInput.removeAttribute('required');
-    idealInput.setAttribute('required', 'true');
-    includesTextarea.setAttribute('required', 'true');
+    idealInput.removeAttribute('required');
+    includesTextarea.removeAttribute('required');
     descTextarea.setAttribute('required', 'true');
   } else {
     multidayFields.style.display = 'none';
