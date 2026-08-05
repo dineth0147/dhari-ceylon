@@ -1004,7 +1004,7 @@ function renderAdminDashboard() {
   if (btnDelete) btnDelete.style.display = 'none';
 
   if (loadedPackages.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No packages loaded.</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No packages loaded.</td></tr>';
     return;
   }
 
@@ -1016,6 +1016,20 @@ function renderAdminDashboard() {
       ? `<strong>Rs. ${Math.round(pkg.price * (1 - pkg.discount / 100)).toLocaleString()}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">Rs. ${Number(pkg.price).toLocaleString()}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>`
       : `<strong>Rs. ${Number(pkg.price).toLocaleString()}</strong>`;
 
+    let addedOnFormatted = '—';
+    if (pkg.createdAt) {
+      const dateObj = pkg.createdAt.toDate ? pkg.createdAt.toDate() : new Date(pkg.createdAt);
+      if (!isNaN(dateObj.getTime())) {
+        addedOnFormatted = dateObj.toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+    }
+
     tr.innerHTML = `
       <td style="text-align: center;"><input type="checkbox" class="pkg-row-select" value="${pkg.id}" onchange="handleRowCheckboxChange()" style="transform: scale(1.2); cursor: pointer;"></td>
       <td><strong>${pkg.name}</strong></td>
@@ -1023,6 +1037,7 @@ function renderAdminDashboard() {
       <td><span class="admin-table-category">${pkg.category}</span></td>
       <td>${priceDisplay}</td>
       <td>${pkg.isFeatured ? '⭐ Yes' : 'No'}</td>
+      <td><span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">${addedOnFormatted}</span></td>
       <td class="admin-table-actions">
         <button class="btn-edit" onclick="editPackage('${pkg.id}')">Edit</button>
         <button class="btn-delete" onclick="deletePackage('${pkg.id}', '${pkg.name.replace(/'/g, "\\'")}')">Delete</button>
@@ -1156,10 +1171,12 @@ async function handlePackageSubmit(e) {
   try {
     if (id) {
       // Edit
+      packageData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
       await db.collection('packages').doc(id).update(packageData);
       alert('Package updated successfully!');
     } else {
       // Create new
+      packageData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
       await db.collection('packages').add(packageData);
       alert('Package added successfully!');
     }
