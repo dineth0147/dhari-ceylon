@@ -32,16 +32,24 @@ const ADMIN_EMAILS = [
   'dhariceylon.official@gmail.com'
 ];
 
-// ---- All available time slots ----
+// ---- All available time slots (30 min intervals) ----
 const ALL_TIME_SLOTS = [
   { value: '09:00', label: '9:00 AM' },
+  { value: '09:30', label: '9:30 AM' },
   { value: '10:00', label: '10:00 AM' },
+  { value: '10:30', label: '10:30 AM' },
   { value: '11:00', label: '11:00 AM' },
+  { value: '11:30', label: '11:30 AM' },
   { value: '12:00', label: '12:00 PM' },
+  { value: '12:30', label: '12:30 PM' },
   { value: '13:00', label: '1:00 PM' },
+  { value: '13:30', label: '1:30 PM' },
   { value: '14:00', label: '2:00 PM' },
+  { value: '14:30', label: '2:30 PM' },
   { value: '15:00', label: '3:00 PM' },
+  { value: '15:30', label: '3:30 PM' },
   { value: '16:00', label: '4:00 PM' },
+  { value: '16:30', label: '4:30 PM' },
   { value: '17:00', label: '5:00 PM' },
 ];
 
@@ -541,7 +549,7 @@ function createBookingCard(booking) {
   // Render multiple treatments if it is an array
   let treatmentsHtml = '';
   if (booking.treatments && Array.isArray(booking.treatments)) {
-    treatmentsHtml = booking.treatments.map(t => `<div class="booking-card-treatment-item">🌿 ${t.name} ($${t.price})</div>`).join('');
+    treatmentsHtml = booking.treatments.map(t => `<div class="booking-card-treatment-item">🌿 ${t.name} (Rs. ${Number(t.price).toLocaleString()})</div>`).join('');
   } else {
     treatmentsHtml = `<div class="booking-card-treatment-item">🌿 ${booking.treatmentLabel || booking.treatment}</div>`;
   }
@@ -658,10 +666,10 @@ function renderTreatmentsUI() {
   const getPriceHTML = (pkg) => {
     if (pkg.discount > 0) {
       const discountedPrice = pkg.price * (1 - pkg.discount / 100);
-      const formattedPrice = discountedPrice.toFixed(2).replace(/\.00$/, '');
-      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.4rem; font-weight: normal;">$${pkg.price}</span><strong>$${formattedPrice}</strong>`;
+      const formattedPrice = Math.round(discountedPrice).toLocaleString();
+      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.4rem; font-weight: normal;">Rs. ${Number(pkg.price).toLocaleString()}</span><strong>Rs. ${formattedPrice}</strong>`;
     }
-    return `<strong>$${pkg.price}</strong>`;
+    return `<strong>Rs. ${Number(pkg.price).toLocaleString()}</strong>`;
   };
 
   if (wellnessGrid) {
@@ -848,8 +856,8 @@ function renderBookingFormDropdowns() {
           <span class="option-text">
             ${pkg.name} 
             <span class="option-price">
-              ${pkg.discount > 0 ? `<span style="text-decoration: line-through; opacity: 0.55; margin-right: 4px;">$${pkg.price}</span>` : ''}
-              $${formattedPrice}
+              ${pkg.discount > 0 ? `<span style="text-decoration: line-through; opacity: 0.55; margin-right: 4px;">Rs. ${Number(pkg.price).toLocaleString()}</span>` : ''}
+              Rs. ${Math.round(discountedPrice).toLocaleString()}
               ${pkg.discount > 0 ? `<span style="font-size: 0.75rem; color: var(--gold-dark); margin-left: 4px; font-weight: bold;">(${pkg.discount}% OFF)</span>` : ''}
             </span>
           </span>
@@ -971,7 +979,7 @@ function updateBookingButton() {
     btnText.textContent = 'Book via WhatsApp';
   } else {
     const total = selectedTreatments.reduce((sum, t) => sum + Number(t.price), 0);
-    btnText.textContent = `Book ${selectedTreatments.length} Session${selectedTreatments.length > 1 ? 's' : ''} ($${total}) via WhatsApp`;
+    btnText.textContent = `Book ${selectedTreatments.length} Session${selectedTreatments.length > 1 ? 's' : ''} (Rs. ${total.toLocaleString()}) via WhatsApp`;
   }
 }
 
@@ -1005,8 +1013,8 @@ function renderAdminDashboard() {
     const typeLabel = pkg.type || (["Targeted Pain Relief", "Surfer & Local Recovery", "Weight Reduction & Toning"].includes(pkg.category) ? "Medical Care" : "Wellness Care");
 
     const priceDisplay = pkg.discount > 0
-      ? `<strong>$${(pkg.price * (1 - pkg.discount / 100)).toFixed(2).replace(/\.00$/, '')}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">$${pkg.price}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>`
-      : `<strong>$${pkg.price}</strong>`;
+      ? `<strong>Rs. ${Math.round(pkg.price * (1 - pkg.discount / 100)).toLocaleString()}</strong> <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; font-weight: normal; margin-left: 0.25rem;">Rs. ${Number(pkg.price).toLocaleString()}</span> <span class="badge" style="background: var(--gold-dark); font-size: 0.7rem; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.25rem;">-${pkg.discount}%</span>`
+      : `<strong>Rs. ${Number(pkg.price).toLocaleString()}</strong>`;
 
     tr.innerHTML = `
       <td style="text-align: center;"><input type="checkbox" class="pkg-row-select" value="${pkg.id}" onchange="handleRowCheckboxChange()" style="transform: scale(1.2); cursor: pointer;"></td>
@@ -1059,7 +1067,7 @@ function toggleCategorySpecificFields() {
     normalDescGroup.style.display = 'block'; // Description is still used as summary
 
     // Add required dynamic attributes
-    durationInput.setAttribute('required', 'true');
+    durationInput.removeAttribute('required');
     idealInput.setAttribute('required', 'true');
     includesTextarea.setAttribute('required', 'true');
     descTextarea.setAttribute('required', 'true');
@@ -1748,13 +1756,16 @@ document.addEventListener('DOMContentLoaded', () => {
       btnLoader.style.display = 'inline';
       submitBtn.disabled = true;
 
+      const timeSelect = document.getElementById('time');
+      const selectedSlotObj = ALL_TIME_SLOTS.find(s => s.value === timeSelect.value);
+
       const formData = {
         treatments: selectedTreatments,
         fullName: document.getElementById('fullName').value,
         phone: document.getElementById('phone').value,
         date: document.getElementById('date').value,
-        time: document.getElementById('time').value,
-        timeLabel: document.getElementById('time').options[document.getElementById('time').selectedIndex].text,
+        time: timeSelect.value,
+        timeLabel: selectedSlotObj ? selectedSlotObj.label : timeSelect.value,
         requests: document.getElementById('requests').value,
       };
 
@@ -1865,28 +1876,33 @@ function loadAvailableSlots(dateStr) {
   activeDateListener = db.collection('bookings')
     .where('date', '==', dateStr)
     .onSnapshot((snapshot) => {
-      const bookedSlots = new Set();
+      const slotCounts = {};
       snapshot.forEach(doc => {
-        bookedSlots.add(doc.data().time);
+        const timeVal = doc.data().time;
+        if (timeVal) {
+          slotCounts[timeVal] = (slotCounts[timeVal] || 0) + 1;
+        }
       });
-      updateTimeSlotsDropdown(bookedSlots);
+      updateTimeSlotsDropdown(slotCounts);
       formGroup.classList.remove('loading');
     }, (error) => {
       console.error('Firestore listener error:', error);
-      updateTimeSlotsDropdown(new Set());
+      updateTimeSlotsDropdown({});
       formGroup.classList.remove('loading');
     });
 }
 
-function updateTimeSlotsDropdown(bookedSlots) {
+function updateTimeSlotsDropdown(slotCounts = {}) {
   const timeSelect = document.getElementById('time');
-  const availableCount = ALL_TIME_SLOTS.filter(slot => !bookedSlots.has(slot.value)).length;
+  const MAX_SLOTS_PER_TIME = 2;
+
+  const availableCount = ALL_TIME_SLOTS.filter(slot => (slotCounts[slot.value] || 0) < MAX_SLOTS_PER_TIME).length;
 
   timeSelect.innerHTML = '';
   timeSelect.disabled = false;
 
   if (availableCount === 0) {
-    timeSelect.innerHTML = '<option value="">All slots booked for this date</option>';
+    timeSelect.innerHTML = '<option value="">All slots fully booked for this date</option>';
     timeSelect.disabled = true;
     timeSelect.closest('.form-group').classList.add('no-slots');
   } else {
@@ -1894,15 +1910,21 @@ function updateTimeSlotsDropdown(bookedSlots) {
     timeSelect.innerHTML = '<option value="">Select a time slot...</option>';
 
     ALL_TIME_SLOTS.forEach(slot => {
+      const count = slotCounts[slot.value] || 0;
+      const remaining = MAX_SLOTS_PER_TIME - count;
       const option = document.createElement('option');
       option.value = slot.value;
 
-      if (bookedSlots.has(slot.value)) {
-        option.textContent = `${slot.label}  —  🔒 Booked`;
+      if (remaining <= 0) {
+        option.textContent = `${slot.label}  —  🔒 Fully Booked`;
         option.disabled = true;
         option.classList.add('slot-booked');
+      } else if (remaining === 1) {
+        option.textContent = `${slot.label}  —  ⚡ 1 Slot Left`;
+        option.disabled = false;
       } else {
-        option.textContent = slot.label;
+        option.textContent = `${slot.label}  —  ✅ 2 Slots Available`;
+        option.disabled = false;
       }
 
       timeSelect.appendChild(option);
@@ -1941,10 +1963,10 @@ function buildWhatsAppMessage(data) {
   message += `🧖 *Treatment Package(s):*\n`;
   let totalCost = 0;
   data.treatments.forEach(t => {
-    message += `  • ${t.name} ($${t.price})\n`;
+    message += `  • ${t.name} (Rs. ${Number(t.price).toLocaleString()})\n`;
     totalCost += Number(t.price);
   });
-  message += `\n💵 *Total Price:* $${totalCost}\n\n`;
+  message += `\n💵 *Total Price:* Rs. ${totalCost.toLocaleString()}\n\n`;
 
   message += `👤 *Name:* ${data.fullName}\n`;
   if (currentUser && currentUser.email) {
