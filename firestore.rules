@@ -23,8 +23,8 @@ service cloud.firestore {
       // Anyone can create a booking if logged in
       allow create: if request.auth != null;
       
-      // All authenticated users can read bookings (needed for time slot availability)
-      allow read: if request.auth != null;
+      // Anyone (guests or signed-in users) can read bookings to check slot availability
+      allow read: if true;
       
       // Admins can delete any booking; users can only delete their own
       allow delete: if request.auth != null && (isAdmin() || resource.data.userId == request.auth.uid);
