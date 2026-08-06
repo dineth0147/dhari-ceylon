@@ -1316,7 +1316,7 @@ function loadAdminBookings() {
 
         let treatmentsLabel = '';
         if (booking.treatments && Array.isArray(booking.treatments)) {
-          treatmentsLabel = booking.treatments.map(t => `${t.name} ($${t.price})`).join(', ');
+          treatmentsLabel = booking.treatments.map(t => `${t.name} (LKR ${Number(t.price).toLocaleString()})`).join(', ');
         } else {
           treatmentsLabel = booking.treatmentLabel || booking.treatment;
         }
@@ -1937,10 +1937,10 @@ function updateTimeSlotsDropdown(slotCounts = {}) {
         option.disabled = true;
         option.classList.add('slot-booked');
       } else if (remaining === 1) {
-        option.textContent = `${slot.label}  —  ⚡ 1 Slot Left`;
+        option.textContent = `${slot.label}  —  ⚡ 1 Booking Left`;
         option.disabled = false;
       } else {
-        option.textContent = `${slot.label}  —  ✅ 2 Slots Available`;
+        option.textContent = `${slot.label}  —  ✅ 2 Bookings Available`;
         option.disabled = false;
       }
 
