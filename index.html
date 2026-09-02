@@ -219,6 +219,7 @@
         </div>
 
         <div id="wellness-treatments" style="scroll-margin-top: 100px;">
+          <div id="admin-banner-wellness" class="admin-live-reorder-banner" style="display:none;"></div>
           <div class="treatments-grid" id="wellnessGrid">
             <!-- Injected dynamically by JS -->
           </div>
@@ -238,6 +239,7 @@
           </p>
         </div>
 
+        <div id="admin-banner-journey" class="admin-live-reorder-banner" style="display:none;"></div>
         <div class="journey-grid" id="journeyGrid">
           <!-- Injected dynamically by JS -->
         </div>
@@ -265,6 +267,7 @@
         </div>
 
         <div id="medical-treatments" style="scroll-margin-top: 100px;">
+          <div id="admin-banner-medical" class="admin-live-reorder-banner" style="display:none;"></div>
           <div class="treatments-grid" id="medicalGrid">
             <!-- Injected dynamically by JS -->
           </div>
@@ -283,6 +286,7 @@
           </p>
         </div>
 
+        <div id="admin-banner-medical-journey" class="admin-live-reorder-banner" style="display:none;"></div>
         <div class="journey-grid" id="medicalJourneyGrid">
           <!-- Injected dynamically by JS -->
         </div>
@@ -961,10 +965,13 @@
     </svg>
   </button>
 
+  <!-- Floating Toast for Admin Reordering -->
+  <div class="admin-toast" id="adminToast"></div>
+
   <!-- Firebase SDK (compat mode for simplicity) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>

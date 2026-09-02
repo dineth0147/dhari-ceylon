@@ -494,6 +494,9 @@ function checkAdminPermissions(user) {
       activeBookingsAdminListener = null;
     }
   }
+
+  // Always re-render treatments so live admin drag & drop controls appear/disappear according to auth status
+  renderTreatmentsUI();
 }
 
 
@@ -617,8 +620,11 @@ function initPackagesSystem() {
         }
       });
 
-      // Sort locally by category then name
+      // Sort locally by order (if defined), then category, then name
       loadedPackages.sort((a, b) => {
+        const orderA = typeof a.order === 'number' ? a.order : 9999;
+        const orderB = typeof b.order === 'number' ? b.order : 9999;
+        if (orderA !== orderB) return orderA - orderB;
         if (a.category !== b.category) return a.category.localeCompare(b.category);
         return a.name.localeCompare(b.name);
       });
@@ -674,9 +680,41 @@ function renderTreatmentsUI() {
     return `<strong>LKR ${Number(pkg.price).toLocaleString()}</strong>`;
   };
 
+  const isUserAdmin = !!(currentUser && ADMIN_EMAILS.includes(currentUser.email));
+
+  const sortByOrder = (a, b) => {
+    const orderA = typeof a.order === 'number' ? a.order : 9999;
+    const orderB = typeof b.order === 'number' ? b.order : 9999;
+    if (orderA !== orderB) return orderA - orderB;
+    return (a.name || '').localeCompare(b.name || '');
+  };
+
+  // Update Admin Live Reorder Banners
+  const updateAdminBanner = (bannerId) => {
+    const banner = document.getElementById(bannerId);
+    if (!banner) return;
+    if (isUserAdmin) {
+      banner.style.display = 'flex';
+      banner.innerHTML = `
+        <span class="admin-live-badge">ADMIN</span>
+        <span>✋ <strong>Live Reorder Active:</strong> Drag &amp; drop any card (or click ◀ / ▶) to change display order live on the website. Changes save automatically!</span>
+      `;
+    } else {
+      banner.style.display = 'none';
+      banner.innerHTML = '';
+    }
+  };
+
+  updateAdminBanner('admin-banner-wellness');
+  updateAdminBanner('admin-banner-journey');
+  updateAdminBanner('admin-banner-medical');
+  updateAdminBanner('admin-banner-medical-journey');
+
   if (wellnessGrid) {
     wellnessGrid.innerHTML = '';
-    const wellnessPkgs = loadedPackages.filter(p => p.category !== 'Package' && getPackageType(p) === 'Wellness Care');
+    const wellnessPkgs = loadedPackages
+      .filter(p => p.category !== 'Package' && getPackageType(p) === 'Wellness Care')
+      .sort(sortByOrder);
 
     if (wellnessPkgs.length === 0) {
       wellnessGrid.innerHTML = '<p class="no-data-msg">No wellness care treatments available.</p>';
@@ -684,11 +722,14 @@ function renderTreatmentsUI() {
       wellnessPkgs.forEach((pkg) => {
         const card = document.createElement('div');
         const isFeatured = !!pkg.isFeatured;
-        card.className = `treatment-card ${isFeatured ? 'treatment-card-premium' : ''} animate-on-scroll visible`;
+        card.className = `treatment-card ${isFeatured ? 'treatment-card-premium' : ''} ${isUserAdmin ? 'admin-draggable-card' : ''} animate-on-scroll visible`;
+        card.dataset.pkgId = pkg.id;
+        if (isUserAdmin) card.setAttribute('draggable', 'true');
 
         const isInCart = cart.some(item => item.id === pkg.id);
 
         card.innerHTML = `
+          ${getAdminCardBarHTML(pkg.id)}
           ${isFeatured ? `<div class="journey-premium-badge">${pkg.tag || 'Most Popular'}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge">${pkg.discount}% OFF</div>` : ''}
           <div class="treatment-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}')"></div>
@@ -698,10 +739,10 @@ function renderTreatmentsUI() {
             <div class="treatment-card-price" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
               <span>Price: ${getPriceHTML(pkg)}</span>
               <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <button class="btn-see-more" onclick="showTreatmentDetail('${pkg.id}')">
+                <button class="btn-see-more" draggable="false" onclick="showTreatmentDetail('${pkg.id}')">
                   See More <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </button>
-                <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
+                <button class="btn btn-gold btn-sm" draggable="false" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
                   ${isInCart ? 'Remove' : 'Add'}
                 </button>
               </div>
@@ -715,7 +756,9 @@ function renderTreatmentsUI() {
 
   if (medicalGrid) {
     medicalGrid.innerHTML = '';
-    const medicalPkgs = loadedPackages.filter(p => p.category !== 'Package' && getPackageType(p) === 'Medical Care');
+    const medicalPkgs = loadedPackages
+      .filter(p => p.category !== 'Package' && getPackageType(p) === 'Medical Care')
+      .sort(sortByOrder);
 
     if (medicalPkgs.length === 0) {
       medicalGrid.innerHTML = '<p class="no-data-msg">No medical care treatments available.</p>';
@@ -723,11 +766,14 @@ function renderTreatmentsUI() {
       medicalPkgs.forEach((pkg) => {
         const card = document.createElement('div');
         const isFeatured = !!pkg.isFeatured;
-        card.className = `treatment-card ${isFeatured ? 'treatment-card-premium' : ''} animate-on-scroll visible`;
+        card.className = `treatment-card ${isFeatured ? 'treatment-card-premium' : ''} ${isUserAdmin ? 'admin-draggable-card' : ''} animate-on-scroll visible`;
+        card.dataset.pkgId = pkg.id;
+        if (isUserAdmin) card.setAttribute('draggable', 'true');
 
         const isInCart = cart.some(item => item.id === pkg.id);
 
         card.innerHTML = `
+          ${getAdminCardBarHTML(pkg.id)}
           ${isFeatured ? `<div class="journey-premium-badge">${pkg.tag || 'Featured'}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge">${pkg.discount}% OFF</div>` : ''}
           ${pkg.image ? `<div class="treatment-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}')"></div>` : ''}
@@ -739,10 +785,10 @@ function renderTreatmentsUI() {
             <div class="treatment-card-price" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
               <span>Price: ${getPriceHTML(pkg)}</span>
               <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <button class="btn-see-more" onclick="showTreatmentDetail('${pkg.id}')">
+                <button class="btn-see-more" draggable="false" onclick="showTreatmentDetail('${pkg.id}')">
                   See More <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </button>
-                <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
+                <button class="btn btn-gold btn-sm" draggable="false" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
                   ${isInCart ? 'Remove' : 'Add'}
                 </button>
               </div>
@@ -757,7 +803,9 @@ function renderTreatmentsUI() {
   // Wellness Packages (journeyGrid)
   if (journeyGrid) {
     journeyGrid.innerHTML = '';
-    const wellnessMultiDayPkgs = loadedPackages.filter(p => p.category === 'Package' && getPackageType(p) === 'Wellness Care');
+    const wellnessMultiDayPkgs = loadedPackages
+      .filter(p => p.category === 'Package' && getPackageType(p) === 'Wellness Care')
+      .sort(sortByOrder);
 
     if (wellnessMultiDayPkgs.length === 0) {
       journeyGrid.innerHTML = '<p class="no-data-msg">No wellness care packages available.</p>';
@@ -765,11 +813,14 @@ function renderTreatmentsUI() {
       wellnessMultiDayPkgs.forEach(pkg => {
         const card = document.createElement('div');
         const isPremium = pkg.isFeatured;
-        card.className = `journey-card ${isPremium ? 'journey-card-premium' : ''} animate-on-scroll visible`;
+        card.className = `journey-card ${isPremium ? 'journey-card-premium' : ''} ${isUserAdmin ? 'admin-draggable-card' : ''} animate-on-scroll visible`;
+        card.dataset.pkgId = pkg.id;
+        if (isUserAdmin) card.setAttribute('draggable', 'true');
 
         const isInCart = cart.some(item => item.id === pkg.id);
 
         card.innerHTML = `
+          ${getAdminCardBarHTML(pkg.id)}
           ${pkg.tag ? `<div class="journey-premium-badge">${pkg.tag}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge" style="top: 1.5rem; right: 2rem;">${pkg.discount}% OFF</div>` : ''}
           ${pkg.image ? `<div class="journey-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}'); height: 220px; background-size: cover; background-position: center; border-radius: var(--radius-md); margin-bottom: 1.5rem;"></div>` : ''}
@@ -778,10 +829,10 @@ function renderTreatmentsUI() {
           <div class="journey-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1rem;">
             <span class="journey-price">From ${getPriceHTML(pkg)}</span>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-              <button class="btn-see-more" onclick="showTreatmentDetail('${pkg.id}')">
+              <button class="btn-see-more" draggable="false" onclick="showTreatmentDetail('${pkg.id}')">
                 See More <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
-              <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
+              <button class="btn btn-gold btn-sm" draggable="false" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
                 ${isInCart ? 'Remove' : 'Add'}
               </button>
             </div>
@@ -795,7 +846,9 @@ function renderTreatmentsUI() {
   // Medical Packages (medicalJourneyGrid)
   if (medicalJourneyGrid) {
     medicalJourneyGrid.innerHTML = '';
-    const medicalMultiDayPkgs = loadedPackages.filter(p => p.category === 'Package' && getPackageType(p) === 'Medical Care');
+    const medicalMultiDayPkgs = loadedPackages
+      .filter(p => p.category === 'Package' && getPackageType(p) === 'Medical Care')
+      .sort(sortByOrder);
 
     if (medicalMultiDayPkgs.length === 0) {
       medicalJourneyGrid.innerHTML = '<p class="no-data-msg">No medical care packages available.</p>';
@@ -803,11 +856,14 @@ function renderTreatmentsUI() {
       medicalMultiDayPkgs.forEach(pkg => {
         const card = document.createElement('div');
         const isPremium = pkg.isFeatured;
-        card.className = `journey-card ${isPremium ? 'journey-card-premium' : ''} animate-on-scroll visible`;
+        card.className = `journey-card ${isPremium ? 'journey-card-premium' : ''} ${isUserAdmin ? 'admin-draggable-card' : ''} animate-on-scroll visible`;
+        card.dataset.pkgId = pkg.id;
+        if (isUserAdmin) card.setAttribute('draggable', 'true');
 
         const isInCart = cart.some(item => item.id === pkg.id);
 
         card.innerHTML = `
+          ${getAdminCardBarHTML(pkg.id)}
           ${pkg.tag ? `<div class="journey-premium-badge">${pkg.tag}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge" style="top: 1.5rem; right: 2rem;">${pkg.discount}% OFF</div>` : ''}
           ${pkg.image ? `<div class="journey-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}'); height: 220px; background-size: cover; background-position: center; border-radius: var(--radius-md); margin-bottom: 1.5rem;"></div>` : ''}
@@ -816,10 +872,10 @@ function renderTreatmentsUI() {
           <div class="journey-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1rem;">
             <span class="journey-price">From ${getPriceHTML(pkg)}</span>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-              <button class="btn-see-more" onclick="showTreatmentDetail('${pkg.id}')">
+              <button class="btn-see-more" draggable="false" onclick="showTreatmentDetail('${pkg.id}')">
                 See More <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
-              <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
+              <button class="btn btn-gold btn-sm" draggable="false" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
                 ${isInCart ? 'Remove' : 'Add'}
               </button>
             </div>
@@ -828,6 +884,14 @@ function renderTreatmentsUI() {
         medicalJourneyGrid.appendChild(card);
       });
     }
+  }
+
+  // Attach live admin drag-and-drop handlers if admin is logged in
+  if (isUserAdmin) {
+    attachAdminGridDragAndDrop(wellnessGrid);
+    attachAdminGridDragAndDrop(medicalGrid);
+    attachAdminGridDragAndDrop(journeyGrid);
+    attachAdminGridDragAndDrop(medicalJourneyGrid);
   }
 }
 
@@ -2695,3 +2759,211 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDropzoneItems();
   });
 });
+
+
+/* ============================================================
+   ADMIN LIVE REORDER ON FRONTEND GRIDS
+   ============================================================ */
+
+function getAdminCardBarHTML(pkgId) {
+  const isUserAdmin = !!(currentUser && ADMIN_EMAILS.includes(currentUser.email));
+  if (!isUserAdmin) return '';
+  return `
+    <div class="admin-card-bar" title="Admin Drag &amp; Reorder Handle">
+      <div class="admin-card-drag-handle">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+          <circle cx="8" cy="6" r="2"/><circle cx="16" cy="6" r="2"/>
+          <circle cx="8" cy="12" r="2"/><circle cx="16" cy="12" r="2"/>
+          <circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/>
+        </svg>
+        <span>Drag to Reorder</span>
+      </div>
+      <div class="admin-card-arrows">
+        <button type="button" class="admin-arrow-btn" onclick="moveCardPosition('${pkgId}', -1, event)" title="Move left / earlier" draggable="false">◀</button>
+        <button type="button" class="admin-arrow-btn" onclick="moveCardPosition('${pkgId}', 1, event)" title="Move right / later" draggable="false">▶</button>
+      </div>
+    </div>
+  `;
+}
+
+let liveDraggedCard = null;
+let liveDraggedGrid = null;
+
+function attachAdminGridDragAndDrop(grid) {
+  if (!grid) return;
+  const cards = grid.querySelectorAll('.admin-draggable-card');
+
+  cards.forEach(card => {
+    // Avoid double attaching
+    if (card.dataset.dragAttached === 'true') return;
+    card.dataset.dragAttached = 'true';
+
+    card.addEventListener('dragstart', (e) => {
+      // Don't start drag if clicking buttons or links
+      if (e.target.closest('button') || e.target.closest('a')) {
+        e.preventDefault();
+        return;
+      }
+
+      liveDraggedCard = card;
+      liveDraggedGrid = grid;
+      card.classList.add('is-dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', card.dataset.pkgId);
+
+      setTimeout(() => {
+        if (card.classList.contains('is-dragging')) {
+          card.style.opacity = '0.35';
+        }
+      }, 0);
+    });
+
+    card.addEventListener('dragend', () => {
+      card.classList.remove('is-dragging');
+      card.style.opacity = '';
+      grid.querySelectorAll('.admin-draggable-card').forEach(c => {
+        c.classList.remove('drop-target-before', 'drop-target-after');
+      });
+      liveDraggedCard = null;
+      liveDraggedGrid = null;
+    });
+
+    card.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (!liveDraggedCard || liveDraggedCard === card || liveDraggedGrid !== grid) return;
+
+      const rect = card.getBoundingClientRect();
+      const midX = rect.left + rect.width / 2;
+      const isAfter = e.clientX > midX;
+
+      if (isAfter) {
+        card.classList.add('drop-target-after');
+        card.classList.remove('drop-target-before');
+      } else {
+        card.classList.add('drop-target-before');
+        card.classList.remove('drop-target-after');
+      }
+    });
+
+    card.addEventListener('dragleave', (e) => {
+      if (!card.contains(e.relatedTarget)) {
+        card.classList.remove('drop-target-before', 'drop-target-after');
+      }
+    });
+
+    card.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      card.classList.remove('drop-target-before', 'drop-target-after');
+
+      if (!liveDraggedCard || liveDraggedCard === card || liveDraggedGrid !== grid) return;
+
+      const rect = card.getBoundingClientRect();
+      const midX = rect.left + rect.width / 2;
+      const isAfter = e.clientX > midX;
+
+      if (isAfter) {
+        card.after(liveDraggedCard);
+      } else {
+        card.before(liveDraggedCard);
+      }
+
+      await saveGridOrder(grid);
+    });
+  });
+
+  // Handle dropping in the grid space itself
+  if (grid.dataset.gridDragAttached !== 'true') {
+    grid.dataset.gridDragAttached = 'true';
+
+    grid.addEventListener('dragover', (e) => {
+      if (liveDraggedCard && liveDraggedGrid === grid) {
+        e.preventDefault();
+      }
+    });
+
+    grid.addEventListener('drop', async (e) => {
+      if (liveDraggedCard && liveDraggedGrid === grid && (e.target === grid || e.target.classList.contains('treatments-grid') || e.target.classList.contains('journey-grid'))) {
+        e.preventDefault();
+        grid.appendChild(liveDraggedCard);
+        await saveGridOrder(grid);
+      }
+    });
+  }
+}
+
+async function moveCardPosition(pkgId, direction, event) {
+  if (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+  if (!currentUser || !ADMIN_EMAILS.includes(currentUser.email)) return;
+
+  const card = document.querySelector(`.admin-draggable-card[data-pkg-id="${pkgId}"]`);
+  if (!card) return;
+  const grid = card.parentElement;
+  if (!grid) return;
+
+  if (direction === -1) {
+    const prev = card.previousElementSibling;
+    if (prev && prev.classList.contains('admin-draggable-card')) {
+      prev.before(card);
+      await saveGridOrder(grid);
+    }
+  } else if (direction === 1) {
+    const next = card.nextElementSibling;
+    if (next && next.classList.contains('admin-draggable-card')) {
+      next.after(card);
+      await saveGridOrder(grid);
+    }
+  }
+}
+
+async function saveGridOrder(grid) {
+  if (!currentUser || !ADMIN_EMAILS.includes(currentUser.email)) return;
+  const cards = Array.from(grid.querySelectorAll('.admin-draggable-card'));
+  const newOrderIds = cards.map(c => c.dataset.pkgId).filter(Boolean);
+
+  if (newOrderIds.length === 0) return;
+
+  showAdminToast('Saving new order...', 'info');
+
+  try {
+    const batch = db.batch();
+    newOrderIds.forEach((id, index) => {
+      const docRef = db.collection('packages').doc(id);
+      batch.update(docRef, { order: index });
+
+      // Update in local memory cache as well
+      const pkg = loadedPackages.find(p => p.id === id);
+      if (pkg) pkg.order = index;
+    });
+
+    await batch.commit();
+    showAdminToast('✓ Order saved to live site!', 'success');
+  } catch (error) {
+    console.error('Failed to save grid order:', error);
+    showAdminToast('Failed to save order: ' + (error.message || error), 'error');
+  }
+}
+
+let toastTimer = null;
+function showAdminToast(message, type = 'info') {
+  let toast = document.getElementById('adminToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'adminToast';
+    toast.className = 'admin-toast';
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = message;
+  toast.className = `admin-toast ${type} show`;
+
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
+}

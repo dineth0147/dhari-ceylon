@@ -3382,3 +3382,174 @@ select option:disabled {
     padding: 1.25rem;
   }
 }
+
+/* ===========================================================
+   ADMIN LIVE REORDER (DRAG & DROP ON LIVE GRID)
+   =========================================================== */
+.admin-live-reorder-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, rgba(10, 46, 38, 0.08), rgba(212, 165, 116, 0.18));
+  border: 1.5px dashed var(--gold-dark);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 2rem;
+  color: var(--green-deep);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  box-shadow: 0 4px 15px rgba(212, 165, 116, 0.15);
+  animation: adminBannerFade 0.4s ease;
+}
+
+@keyframes adminBannerFade {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-live-badge {
+  background: var(--gold-dark);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(179, 125, 78, 0.4);
+}
+
+.admin-draggable-card {
+  cursor: grab;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, outline 0.2s ease !important;
+}
+
+.admin-draggable-card:active {
+  cursor: grabbing;
+}
+
+/* Top bar on each card when admin is logged in */
+.admin-card-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0d382e;
+  color: #fff;
+  padding: 8px 12px;
+  border-bottom: 1.5px solid rgba(212, 165, 116, 0.35);
+  user-select: none;
+  cursor: grab;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  z-index: 12;
+  position: relative;
+}
+
+.admin-card-bar:active {
+  cursor: grabbing;
+}
+
+.admin-card-drag-handle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-gold);
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.admin-card-drag-handle svg {
+  color: #fff;
+  opacity: 0.9;
+}
+
+.admin-card-arrows {
+  display: flex;
+  gap: 5px;
+}
+
+.admin-arrow-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border-radius: 4px;
+  width: 26px;
+  height: 24px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.admin-arrow-btn:hover {
+  background: var(--gold-dark);
+  border-color: var(--gold-dark);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* State when actively being dragged */
+.admin-draggable-card.is-dragging {
+  opacity: 0.35 !important;
+  transform: scale(0.96) !important;
+  outline: 2px dashed var(--gold-dark) !important;
+  outline-offset: 4px;
+}
+
+/* Hover drop target highlights */
+.admin-draggable-card.drop-target-before {
+  outline: 3px solid var(--gold-dark) !important;
+  outline-offset: 4px;
+  transform: translateY(-4px);
+}
+
+.admin-draggable-card.drop-target-after {
+  outline: 3px solid var(--gold-dark) !important;
+  outline-offset: 4px;
+  transform: translateY(4px);
+}
+
+/* Floating Toast Notification */
+.admin-toast {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: var(--green-deep);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 999999;
+  transform: translateY(90px);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1.5px solid var(--accent-gold);
+  pointer-events: none;
+}
+
+.admin-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.admin-toast.success {
+  background: #093327;
+  border-color: #28a745;
+}
+
+.admin-toast.error {
+  background: #4a1318;
+  border-color: #dc3545;
+}
