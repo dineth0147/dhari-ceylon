@@ -51,6 +51,8 @@ const ALL_TIME_SLOTS = [
   { value: '16:00', label: '4:00 PM' },
   { value: '16:30', label: '4:30 PM' },
   { value: '17:00', label: '5:00 PM' },
+  { value: '17:30', label: '5:30 PM' },
+  { value: '18:00', label: '6:00 PM' },
 ];
 
 // ---- Global State ----
@@ -693,12 +695,16 @@ function renderTreatmentsUI() {
           <div class="treatment-card-content">
             ${(!isFeatured && pkg.tag) ? `<div class="treatment-card-tag">${pkg.tag}</div>` : ''}
             <h3>${pkg.name}</h3>
-            <p>${pkg.description}</p>
             <div class="treatment-card-price" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
               <span>Price: ${getPriceHTML(pkg)}</span>
-              <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
-                ${isInCart ? 'Remove' : 'Add'}
-              </button>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="btn-see-more" onclick="showTreatmentDetail('${pkg.id}')">
+                  See More <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
+                  ${isInCart ? 'Remove' : 'Add'}
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -724,17 +730,22 @@ function renderTreatmentsUI() {
         card.innerHTML = `
           ${isFeatured ? `<div class="journey-premium-badge">${pkg.tag || 'Featured'}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge">${pkg.discount}% OFF</div>` : ''}
-          <div class="treatment-card-content" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; min-height: 200px;">
+          ${pkg.image ? `<div class="treatment-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}')"></div>` : ''}
+          <div class="treatment-card-content" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; min-height: 180px;">
             <div>
               ${(!isFeatured && pkg.tag) ? `<div class="treatment-card-tag">${pkg.tag}</div>` : ''}
               <h3>${pkg.name}</h3>
-              <p>${pkg.description}</p>
             </div>
             <div class="treatment-card-price" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
               <span>Price: ${getPriceHTML(pkg)}</span>
-              <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
-                ${isInCart ? 'Remove' : 'Add'}
-              </button>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <button class="btn-see-more" onclick="showTreatmentDetail('${pkg.id}')">
+                  See More <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
+                  ${isInCart ? 'Remove' : 'Add'}
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -756,8 +767,6 @@ function renderTreatmentsUI() {
         const isPremium = pkg.isFeatured;
         card.className = `journey-card ${isPremium ? 'journey-card-premium' : ''} animate-on-scroll visible`;
 
-        const includesItems = pkg.includes ? pkg.includes.split('\n').filter(i => i.trim() !== '') : [];
-        const includesHtml = includesItems.map(i => `<li>${i}</li>`).join('');
         const isInCart = cart.some(item => item.id === pkg.id);
 
         card.innerHTML = `
@@ -766,14 +775,16 @@ function renderTreatmentsUI() {
           ${pkg.image ? `<div class="journey-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}'); height: 220px; background-size: cover; background-position: center; border-radius: var(--radius-md); margin-bottom: 1.5rem;"></div>` : ''}
           <div class="journey-duration">${pkg.duration || 'Retreat'}</div>
           <h3 class="journey-title">${pkg.name}</h3>
-          <p class="journey-desc">${pkg.description}</p>
-          ${includesHtml ? `<ul class="journey-includes">${includesHtml}</ul>` : ''}
-          ${pkg.ideal ? `<div class="journey-ideal"><strong>Ideal for:</strong> ${pkg.ideal}</div>` : ''}
           <div class="journey-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1rem;">
             <span class="journey-price">From ${getPriceHTML(pkg)}</span>
-            <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
-              ${isInCart ? 'Remove' : 'Add'}
-            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <button class="btn-see-more" onclick="showTreatmentDetail('${pkg.id}')">
+                See More <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+              <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
+                ${isInCart ? 'Remove' : 'Add'}
+              </button>
+            </div>
           </div>
         `;
         journeyGrid.appendChild(card);
@@ -794,23 +805,24 @@ function renderTreatmentsUI() {
         const isPremium = pkg.isFeatured;
         card.className = `journey-card ${isPremium ? 'journey-card-premium' : ''} animate-on-scroll visible`;
 
-        const includesItems = pkg.includes ? pkg.includes.split('\n').filter(i => i.trim() !== '') : [];
-        const includesHtml = includesItems.map(i => `<li>${i}</li>`).join('');
         const isInCart = cart.some(item => item.id === pkg.id);
 
         card.innerHTML = `
           ${pkg.tag ? `<div class="journey-premium-badge">${pkg.tag}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge" style="top: 1.5rem; right: 2rem;">${pkg.discount}% OFF</div>` : ''}
+          ${pkg.image ? `<div class="journey-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}'); height: 220px; background-size: cover; background-position: center; border-radius: var(--radius-md); margin-bottom: 1.5rem;"></div>` : ''}
           <div class="journey-duration">${pkg.duration || 'Retreat'}</div>
           <h3 class="journey-title">${pkg.name}</h3>
-          <p class="journey-desc">${pkg.description}</p>
-          ${includesHtml ? `<ul class="journey-includes">${includesHtml}</ul>` : ''}
-          ${pkg.ideal ? `<div class="journey-ideal"><strong>Ideal for:</strong> ${pkg.ideal}</div>` : ''}
           <div class="journey-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1rem;">
             <span class="journey-price">From ${getPriceHTML(pkg)}</span>
-            <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
-              ${isInCart ? 'Remove' : 'Add'}
-            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <button class="btn-see-more" onclick="showTreatmentDetail('${pkg.id}')">
+                See More <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+              <button class="btn btn-gold btn-sm" onclick="toggleCartItem('${pkg.id}')" id="btn-cart-${pkg.id}">
+                ${isInCart ? 'Remove' : 'Add'}
+              </button>
+            </div>
           </div>
         `;
         medicalJourneyGrid.appendChild(card);
@@ -1052,6 +1064,7 @@ function showAddPackageForm() {
   document.getElementById('formActionTitle').textContent = 'Add New Package';
   document.getElementById('adminPackageForm').reset();
   document.getElementById('packageFormId').value = '';
+  packageBuilderItems = [];
   toggleCategorySpecificFields();
 
   // Scroll to form
@@ -1062,6 +1075,7 @@ function hidePackageForm() {
   document.getElementById('packageFormCard').style.display = 'none';
   document.getElementById('adminPackageForm').reset();
   document.getElementById('packageFormId').value = '';
+  packageBuilderItems = [];
 }
 
 function toggleCategorySpecificFields() {
@@ -1096,13 +1110,13 @@ function toggleCategorySpecificFields() {
     descTextarea.setAttribute('required', 'true');
   }
 
-  // Medical Care items do not have/require images
-  if (type === 'Medical Care') {
-    if (imageGroup) imageGroup.style.display = 'none';
-    if (imageInput) imageInput.removeAttribute('required');
-  } else {
-    if (imageGroup) imageGroup.style.display = 'block';
-    if (imageInput) imageInput.setAttribute('required', 'true');
+  // Image is available for all types
+  if (imageGroup) imageGroup.style.display = 'block';
+  if (imageInput) imageInput.setAttribute('required', 'true');
+
+  // Refresh drag & drop builder when type/category changes
+  if (category === 'Package') {
+    renderDragDropBuilder();
   }
 }
 
@@ -1133,6 +1147,22 @@ function editPackage(pkgId) {
     document.getElementById('pkgDuration').value = pkg.duration || '';
     document.getElementById('pkgIdeal').value = pkg.ideal || '';
     document.getElementById('pkgIncludes').value = pkg.includes || '';
+
+    // Populate drag & drop builder from existing includes
+    packageBuilderItems = [];
+    if (pkg.includes) {
+      const includeLines = pkg.includes.split('\n').filter(i => i.trim());
+      includeLines.forEach(line => {
+        // Try to match with an existing loaded treatment
+        const matchedPkg = loadedPackages.find(p => p.name === line.trim() && p.category !== 'Package');
+        packageBuilderItems.push({
+          id: matchedPkg ? matchedPkg.id : '',
+          name: line.trim(),
+          price: matchedPkg ? matchedPkg.price : 0
+        });
+      });
+    }
+    renderDragDropBuilder();
   }
 
   // Scroll to form
@@ -1157,7 +1187,7 @@ async function handlePackageSubmit(e) {
     price: Number(document.getElementById('pkgPrice').value),
     discount: Number(document.getElementById('pkgDiscount').value) || 0,
     tag: document.getElementById('pkgTag').value,
-    image: type === 'Medical Care' ? '' : parseGoogleDriveUrl(document.getElementById('pkgImage').value, 'image'),
+    image: parseGoogleDriveUrl(document.getElementById('pkgImage').value, 'image'),
     description: document.getElementById('pkgDesc').value,
     isFeatured: document.getElementById('pkgIsFeatured').checked
   };
@@ -2364,3 +2394,304 @@ async function deleteGalleryItem(itemId, caption) {
   }
 }
 
+
+/* ============================================================
+   TREATMENT DETAIL MODAL
+   ============================================================ */
+
+function showTreatmentDetail(pkgId) {
+  const pkg = loadedPackages.find(p => p.id === pkgId);
+  if (!pkg) return;
+
+  const overlay = document.getElementById('treatmentDetailOverlay');
+  const imgEl = document.getElementById('treatmentDetailImage');
+  const tagEl = document.getElementById('treatmentDetailTag');
+  const titleEl = document.getElementById('treatmentDetailTitle');
+  const descEl = document.getElementById('treatmentDetailDesc');
+  const metaEl = document.getElementById('treatmentDetailMeta');
+  const priceEl = document.getElementById('treatmentDetailPrice');
+  const cartBtn = document.getElementById('treatmentDetailCartBtn');
+
+  // Image
+  if (pkg.image) {
+    imgEl.style.backgroundImage = `url('${parseGoogleDriveUrl(pkg.image, 'image')}')`;
+    imgEl.style.display = 'block';
+  } else {
+    imgEl.style.display = 'none';
+  }
+
+  // Tag
+  tagEl.textContent = pkg.tag || '';
+
+  // Title
+  titleEl.textContent = pkg.name;
+
+  // Description
+  descEl.textContent = pkg.description || '';
+
+  // Meta info
+  let metaHtml = '';
+  if (pkg.duration) {
+    metaHtml += `<div class="detail-meta-item"><strong>Duration:</strong> <span>${pkg.duration}</span></div>`;
+  }
+  if (pkg.ideal) {
+    metaHtml += `<div class="detail-meta-item"><strong>Ideal For:</strong> <span>${pkg.ideal}</span></div>`;
+  }
+  if (pkg.includes) {
+    const items = pkg.includes.split('\n').filter(i => i.trim());
+    if (items.length > 0) {
+      metaHtml += `<div class="detail-meta-item" style="flex-direction: column; gap: 0.25rem;"><strong>Includes:</strong><ul style="margin: 0; padding-left: 1.2rem;">${items.map(i => `<li style="font-size: 0.88rem; margin-bottom: 2px;">${i.trim()}</li>`).join('')}</ul></div>`;
+    }
+  }
+  metaEl.innerHTML = metaHtml;
+
+  // Price
+  const getPriceHTMLDetail = (p) => {
+    if (p.discount > 0) {
+      const discountedPrice = p.price * (1 - p.discount / 100);
+      return `<span style="text-decoration: line-through; opacity: 0.55; font-size: 0.88em; margin-right: 0.4rem;">LKR ${Number(p.price).toLocaleString()}</span><strong>LKR ${Math.round(discountedPrice).toLocaleString()}</strong>`;
+    }
+    return `<strong>LKR ${Number(p.price).toLocaleString()}</strong>`;
+  };
+  priceEl.innerHTML = `Price: ${getPriceHTMLDetail(pkg)}`;
+
+  // Cart button
+  const isInCart = cart.some(item => item.id === pkg.id);
+  cartBtn.textContent = isInCart ? 'Remove' : 'Add';
+  cartBtn.onclick = () => {
+    toggleCartItem(pkg.id);
+    const newIsInCart = cart.some(item => item.id === pkg.id);
+    cartBtn.textContent = newIsInCart ? 'Remove' : 'Add';
+  };
+
+  // Show overlay
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTreatmentDetail() {
+  const overlay = document.getElementById('treatmentDetailOverlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('treatmentDetailOverlay');
+    if (overlay && overlay.classList.contains('active')) {
+      closeTreatmentDetail();
+    }
+  }
+});
+
+
+/* ============================================================
+   DRAG & DROP PACKAGE BUILDER (ADMIN)
+   ============================================================ */
+
+let packageBuilderItems = []; // Items currently in the dropzone
+
+/**
+ * Render available treatments in the drag pool based on selected care type.
+ */
+function renderDragDropBuilder() {
+  const poolEl = document.getElementById('pkgBuilderPoolItems');
+  const dropzoneEl = document.getElementById('pkgBuilderDropzoneItems');
+  if (!poolEl) return;
+
+  const selectedType = document.getElementById('pkgType').value;
+
+  // Get single treatments (not packages) for the selected care type
+  const getPackageType = (pkg) => {
+    if (pkg.type) return pkg.type;
+    const medicalCats = ["Targeted Pain Relief", "Surfer & Local Recovery", "Weight Reduction & Toning"];
+    return medicalCats.includes(pkg.category) ? "Medical Care" : "Wellness Care";
+  };
+
+  const availableTreatments = loadedPackages.filter(p => 
+    p.category !== 'Package' && getPackageType(p) === selectedType
+  );
+
+  poolEl.innerHTML = '';
+
+  if (availableTreatments.length === 0) {
+    poolEl.innerHTML = '<div class="pkg-builder-pool-empty">No treatments available for this care type</div>';
+    return;
+  }
+
+  availableTreatments.forEach(pkg => {
+    const item = document.createElement('div');
+    item.className = 'drag-item';
+    item.draggable = true;
+    item.dataset.pkgId = pkg.id;
+    item.dataset.pkgName = pkg.name;
+    item.dataset.pkgPrice = pkg.price;
+
+    item.innerHTML = `
+      <span class="drag-item-grip">☰</span>
+      <span class="drag-item-name">${pkg.name}</span>
+      <span class="drag-item-price">LKR ${Number(pkg.price).toLocaleString()}</span>
+    `;
+
+    // Drag events for pool items
+    item.addEventListener('dragstart', handleDragStart);
+    item.addEventListener('dragend', handleDragEnd);
+
+    poolEl.appendChild(item);
+  });
+
+  // Re-render dropzone items
+  renderDropzoneItems();
+}
+
+function renderDropzoneItems() {
+  const dropzoneEl = document.getElementById('pkgBuilderDropzoneItems');
+  if (!dropzoneEl) return;
+
+  // Clear existing items
+  dropzoneEl.innerHTML = '';
+
+  if (packageBuilderItems.length === 0) {
+    // Re-add placeholder
+    const ph = document.createElement('div');
+    ph.className = 'pkg-builder-placeholder';
+    ph.id = 'pkgBuilderPlaceholder';
+    ph.innerHTML = `
+      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Drop treatments here</span>
+    `;
+    dropzoneEl.appendChild(ph);
+  } else {
+    packageBuilderItems.forEach((item, index) => {
+      const el = document.createElement('div');
+      el.className = 'drag-item';
+      el.draggable = true;
+      el.dataset.dropIndex = index;
+      el.dataset.pkgName = item.name;
+
+      el.innerHTML = `
+        <span class="drag-item-grip">☰</span>
+        <span class="drag-item-name">${item.name}</span>
+        <span class="drag-item-price">LKR ${Number(item.price).toLocaleString()}</span>
+        <button type="button" class="drag-item-remove" onclick="removeBuilderItem(${index})">×</button>
+      `;
+
+      // Enable reorder drag within dropzone
+      el.addEventListener('dragstart', handleDropzoneDragStart);
+      el.addEventListener('dragend', handleDragEnd);
+
+      dropzoneEl.appendChild(el);
+    });
+  }
+
+  syncBuilderToTextarea();
+}
+
+function syncBuilderToTextarea() {
+  const textarea = document.getElementById('pkgIncludes');
+  if (!textarea) return;
+  textarea.value = packageBuilderItems.map(item => item.name).join('\n');
+}
+
+function removeBuilderItem(index) {
+  packageBuilderItems.splice(index, 1);
+  renderDropzoneItems();
+}
+
+function clearPackageBuilder() {
+  packageBuilderItems = [];
+  renderDropzoneItems();
+}
+
+// --- Drag event handlers ---
+let draggedData = null;
+let dragSource = null; // 'pool' or 'dropzone'
+let draggedDropIndex = null;
+
+function handleDragStart(e) {
+  draggedData = {
+    id: e.target.dataset.pkgId,
+    name: e.target.dataset.pkgName,
+    price: Number(e.target.dataset.pkgPrice)
+  };
+  dragSource = 'pool';
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'copy';
+  e.dataTransfer.setData('text/plain', e.target.dataset.pkgName);
+}
+
+function handleDropzoneDragStart(e) {
+  draggedDropIndex = Number(e.target.dataset.dropIndex);
+  draggedData = packageBuilderItems[draggedDropIndex];
+  dragSource = 'dropzone';
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', e.target.dataset.pkgName);
+}
+
+function handleDragEnd(e) {
+  e.target.classList.remove('dragging');
+  draggedData = null;
+  dragSource = null;
+  draggedDropIndex = null;
+
+  // Remove drag-over from dropzone
+  const dropzone = document.getElementById('pkgBuilderDropzone');
+  if (dropzone) dropzone.classList.remove('drag-over');
+}
+
+// Set up dropzone listeners
+document.addEventListener('DOMContentLoaded', () => {
+  const dropzone = document.getElementById('pkgBuilderDropzone');
+  if (!dropzone) return;
+
+  dropzone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = dragSource === 'pool' ? 'copy' : 'move';
+    dropzone.classList.add('drag-over');
+  });
+
+  dropzone.addEventListener('dragleave', (e) => {
+    // Only remove if we're actually leaving the dropzone
+    if (!dropzone.contains(e.relatedTarget)) {
+      dropzone.classList.remove('drag-over');
+    }
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('drag-over');
+
+    if (!draggedData) return;
+
+    if (dragSource === 'pool') {
+      // Add item from pool to dropzone (allow duplicates for multi-treatment packages)
+      packageBuilderItems.push({
+        id: draggedData.id,
+        name: draggedData.name,
+        price: draggedData.price
+      });
+    } else if (dragSource === 'dropzone') {
+      // Reorder within dropzone
+      const dropzoneItems = document.getElementById('pkgBuilderDropzoneItems');
+      const children = [...dropzoneItems.querySelectorAll('.drag-item')];
+      let targetIndex = children.length;
+
+      for (let i = 0; i < children.length; i++) {
+        const rect = children[i].getBoundingClientRect();
+        if (e.clientY < rect.top + rect.height / 2) {
+          targetIndex = i;
+          break;
+        }
+      }
+
+      // Remove from old position and insert at new position
+      const [movedItem] = packageBuilderItems.splice(draggedDropIndex, 1);
+      const adjustedIndex = targetIndex > draggedDropIndex ? targetIndex - 1 : targetIndex;
+      packageBuilderItems.splice(adjustedIndex, 0, movedItem);
+    }
+
+    renderDropzoneItems();
+  });
+});
