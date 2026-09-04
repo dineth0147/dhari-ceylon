@@ -714,9 +714,11 @@ function renderTreatmentsUI() {
           ${pkg.discount > 0 ? `<div class="discount-percent-badge">${pkg.discount}% OFF</div>` : ''}
           <div class="treatment-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}')"></div>
           <div class="treatment-card-content">
-            ${(!isFeatured && pkg.tag) ? `<div class="treatment-card-tag">${pkg.tag}</div>` : ''}
-            <h3>${pkg.name}</h3>
-            <div class="treatment-card-price" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
+            <div>
+              ${(!isFeatured && pkg.tag) ? `<div class="treatment-card-tag">${pkg.tag}</div>` : ''}
+              <h3>${pkg.name}</h3>
+            </div>
+            <div class="treatment-card-price">
               <span>Price: ${getPriceHTML(pkg)}</span>
               <div style="display: flex; gap: 0.5rem; align-items: center;">
                 <button class="btn-see-more" draggable="false" onclick="showTreatmentDetail('${pkg.id}')">
@@ -757,12 +759,12 @@ function renderTreatmentsUI() {
           ${isFeatured ? `<div class="journey-premium-badge">${pkg.tag || 'Featured'}</div>` : ''}
           ${pkg.discount > 0 ? `<div class="discount-percent-badge">${pkg.discount}% OFF</div>` : ''}
           ${pkg.image ? `<div class="treatment-card-image" style="background-image: url('${parseGoogleDriveUrl(pkg.image, 'image')}')"></div>` : ''}
-          <div class="treatment-card-content" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; min-height: 180px;">
+          <div class="treatment-card-content">
             <div>
               ${(!isFeatured && pkg.tag) ? `<div class="treatment-card-tag">${pkg.tag}</div>` : ''}
               <h3>${pkg.name}</h3>
             </div>
-            <div class="treatment-card-price" style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
+            <div class="treatment-card-price">
               <span>Price: ${getPriceHTML(pkg)}</span>
               <div style="display: flex; gap: 0.5rem; align-items: center;">
                 <button class="btn-see-more" draggable="false" onclick="showTreatmentDetail('${pkg.id}')">
