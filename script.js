@@ -689,26 +689,6 @@ function renderTreatmentsUI() {
     return (a.name || '').localeCompare(b.name || '');
   };
 
-  // Update Admin Live Reorder Banners
-  const updateAdminBanner = (bannerId) => {
-    const banner = document.getElementById(bannerId);
-    if (!banner) return;
-    if (isUserAdmin) {
-      banner.style.display = 'flex';
-      banner.innerHTML = `
-        <span class="admin-live-badge">ADMIN</span>
-        <span>✋ <strong>Live Reorder Active:</strong> Drag &amp; drop any card (or click ◀ / ▶) to change display order live on the website. Changes save automatically!</span>
-      `;
-    } else {
-      banner.style.display = 'none';
-      banner.innerHTML = '';
-    }
-  };
-
-  updateAdminBanner('admin-banner-wellness');
-  updateAdminBanner('admin-banner-journey');
-  updateAdminBanner('admin-banner-medical');
-  updateAdminBanner('admin-banner-medical-journey');
 
   if (wellnessGrid) {
     wellnessGrid.innerHTML = '';
