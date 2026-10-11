@@ -1,0 +1,11 @@
+# Robots.txt for Dhari Ceylon Wellness
+# https://dhariceylon.com
+
+User-agent: *
+Allow: /
+
+# Disallow crawler access to any build / source configs if applicable
+Disallow: /firestore.rules
+Disallow: /firebase.json
+
+Sitemap: https://dhariceylon.com/sitemap.xml

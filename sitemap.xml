@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://dhariceylon.com/</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://dhariceylon.com/about-ayurveda.jpg</image:loc>
+      <image:title>Dhari Ceylon Wellness - Authentic Ayurveda in Ahangama, Sri Lanka</image:title>
+      <image:caption>Authentic Ceylon Ayurveda sanctuary in Ahangama, Sri Lanka offering bespoke treatments and doctor consultations</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://dhariceylon.com/logo.jpg</image:loc>
+      <image:title>Dhari Ceylon Logo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://dhariceylon.com/#wellness-care</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://dhariceylon.com/#about</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://dhariceylon.com/#medical-care</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://dhariceylon.com/#booking</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://dhariceylon.com/#contact</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dhariceylon.com/#faq</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://dhariceylon.com/#gallery</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

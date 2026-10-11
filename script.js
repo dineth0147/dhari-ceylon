@@ -53,6 +53,10 @@ const ALL_TIME_SLOTS = [
   { value: '17:00', label: '5:00 PM' },
   { value: '17:30', label: '5:30 PM' },
   { value: '18:00', label: '6:00 PM' },
+  { value: '18:30', label: '6:30 PM' },
+  { value: '19:00', label: '7:00 PM' },
+  { value: '19:30', label: '7:30 PM' },
+  { value: '20:00', label: '8:00 PM' },
 ];
 
 // ---- Global State ----
